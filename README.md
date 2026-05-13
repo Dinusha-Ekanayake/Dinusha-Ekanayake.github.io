@@ -1,121 +1,51 @@
-# Dinusha Ekanayake — Personal Portfolio
+# Dinusha Ekanayake — Portfolio
 
-> Modern, minimal, Apple-inspired personal portfolio with dark/light mode, admin dashboard, and photography galleries.
+Dark cinematic portfolio with animated constellation background, identity-driven design, and bento grid layouts.
 
-## 🚀 Deploy to GitHub Pages in 5 Steps
+## 🚀 Deploy to GitHub Pages
 
-1. **Create a new GitHub repo** named `Dinusha-Ekanayake.github.io`
-   - Go to github.com → New repository
-   - Name it exactly: `Dinusha-Ekanayake.github.io`
-   - Set to Public
-
-2. **Upload files**
+1. Create repo: `Dinusha-Ekanayake.github.io` (Public)
+2. Upload these files:
    ```
-   index.html          ← main portfolio file
+   index.html
    assets/
-     cv.pdf            ← your CV/resume (rename to cv.pdf)
-     profile.jpg       ← your profile photo
+     cv.pdf          ← your resume
+     profile.jpg     ← your photo
    ```
-
-3. **Enable GitHub Pages**
-   - Repository Settings → Pages
-   - Source: Deploy from a branch → `main` → `/ (root)`
-   - Save
-
-4. **Your site is live at:**
-   `https://Dinusha-Ekanayake.github.io`
-
----
-
-## 📁 Folder Structure
-
-```
-/
-├── index.html          # The entire portfolio (self-contained)
-└── assets/
-    ├── cv.pdf          # Your downloadable CV
-    └── profile.jpg     # Profile photo (for About section)
-```
-
----
+3. Settings → Pages → Source: `main` branch → `/ (root)` → Save
+4. Live at: `https://Dinusha-Ekanayake.github.io`
 
 ## 🔐 Admin Dashboard
 
-Press **`Ctrl + Shift + A`** on your live site to open the dashboard.
+**Open:** Press `Ctrl + Shift + A` on your site  
+**Password:** `dinusha2024` (change it in `index.html` — search for `const PW=`)
 
-**Default password:** `dinusha2024`
+**Manage:** Projects, Experience, Certifications, Photo Albums, Articles, CV link
 
-To change it: open `index.html` in a text editor, find the line:
-```js
-const PASS = 'dinusha2024';
-```
-Change it to any password you want.
+Data saves to your browser's localStorage.
 
-### What you can manage:
-| Section | Can Add | Can Delete |
-|---------|---------|------------|
-| Projects | ✅ | ✅ |
-| Experience | ✅ | ✅ |
-| Certifications & Awards | ✅ | ✅ |
-| Photo Albums | ✅ | ✅ |
-| Articles / Blog Posts | ✅ | ✅ |
-| CV Link | ✅ | — |
+## 🎨 Design Details
 
-> **Note:** Dashboard data is stored in your browser's localStorage. If you use a different browser/device, the data won't sync — but the site's default data (hardcoded in the HTML) always shows as fallback.
+- **Theme:** Dark-first cinematic with warm amber (#D4A853), teal (#2EC4B6), coral (#E85D75)
+- **Fonts:** Syne (display) + Plus Jakarta Sans (body) + Fira Code (mono)
+- **Hero:** Animated constellation canvas with connected particle nodes
+- **Identity Cards:** 4 cards for Code / Capture / Explore / Lead
+- **Skills:** Bento grid with colored glow effects
+- **Photography:** Masonry gallery with hover overlays
+- **Travel:** Topographic SVG + stats grid
+- **Scroll progress bar** at the top
+- **Dark/Light toggle** with saved preference
 
----
+## ✏️ Customise
 
-## 🌗 Dark / Light Mode
+| What | Where |
+|------|-------|
+| Name/bio | Search `Dinusha Ekanayake` in HTML |
+| Accent colors | CSS `:root` variables at the top |
+| Admin password | `const PW='dinusha2024'` in JS |
+| Email | Search `dinushabawantha2003@gmail.com` |
+| Social links | Contact section in HTML |
 
-- Click the toggle button in the top-right nav
-- Your preference is saved automatically across visits
+## 📸 Photo Albums
 
----
-
-## 📸 Adding Your Photos
-
-For photo albums in the dashboard:
-1. Upload images to any hosting (Imgur, Cloudinary, Google Photos public link, GitHub repo)
-2. Open the dashboard → **Photo Albums** tab
-3. Paste the image URL in "Cover image URL"
-
----
-
-## 📄 Updating Your CV
-
-**Option A — In your GitHub repo:**
-- Go to your repo → Upload `assets/cv.pdf`
-- The "Download CV" button works automatically
-
-**Option B — Via Dashboard:**
-- Press `Ctrl+Shift+A` → CV & Settings tab
-- Paste a Google Drive direct link or any PDF URL
-
-To get a Google Drive direct link:
-1. Upload PDF to Google Drive
-2. Right-click → Share → "Anyone with the link"
-3. Copy link, then change `/view` to `/export?format=pdf` at the end
-
----
-
-## ✏️ Customisation
-
-Open `index.html` in any text editor (VS Code recommended).
-
-**Change your name/bio:** Search for `Dinusha Ekanayake` — all instances are clearly labelled.
-
-**Change accent colour:** Find `:root {` near the top, change `--accent: #1E5C42` to any colour.
-
-**Add a custom domain:** In GitHub Pages settings, add your domain (e.g. `dinusha.dev`).
-
----
-
-## 📬 Contact Form
-
-The contact form opens the user's mail client with a pre-filled email to `dinushabawantha2003@gmail.com`.
-
-To change: search for `dinushabawantha2003@gmail.com` in `index.html`.
-
----
-
-Built with HTML · CSS · Vanilla JS · Google Fonts (Cormorant + DM Sans + JetBrains Mono)
+Upload images anywhere (Imgur, Cloudinary, GitHub repo), then use the dashboard to add album cover URLs.
