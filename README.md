@@ -1,51 +1,51 @@
-# Dinusha Ekanayake — Portfolio
+# Dinusha Ekanayake — AI/ML Portfolio
 
-Dark cinematic portfolio with animated constellation background, identity-driven design, and bento grid layouts.
+A deploy-ready, single-page portfolio for an AI undergraduate and emerging AI/ML engineer. The experience is built with semantic HTML, modern CSS, and lightweight vanilla JavaScript—no build step required.
 
-## 🚀 Deploy to GitHub Pages
+## Highlights
 
-1. Create repo: `Dinusha-Ekanayake.github.io` (Public)
-2. Upload these files:
-   ```
-   index.html
-   assets/
-     cv.pdf          ← your resume
-     profile.jpg     ← your photo
-   ```
-3. Settings → Pages → Source: `main` branch → `/ (root)` → Save
-4. Live at: `https://Dinusha-Ekanayake.github.io`
+- Cinematic constellation hero with a pointer-responsive 3D AI technology cloud
+- CV-aligned sections for profile, skills, education, projects, achievements, certifications, volunteering, and contact
+- Applied-AI project filtering and interactive project detail modals
+- Live neural-network backgrounds that react to pointer movement
+- Dark and light themes with saved preference
+- Responsive navigation and layouts for desktop, tablet, and mobile
+- Reduced-motion support, keyboard navigation, focus states, and a skip link
+- Local profile image, CV, and technology icons for reliable deployment
 
-## 🔐 Admin Dashboard
+## Run locally
 
-**Open:** Press `Ctrl + Shift + A` on your site  
-**Password:** `dinusha2024` (change it in `index.html` — search for `const PW=`)
+Open `index.html` directly, or serve the directory with any static server:
 
-**Manage:** Projects, Experience, Certifications, Photo Albums, Articles, CV link
+```bash
+npx serve .
+```
 
-Data saves to your browser's localStorage.
+## Deploy to GitHub Pages
 
-## 🎨 Design Details
+1. Push the repository to `Dinusha-Ekanayake.github.io`.
+2. Open **Settings → Pages** in GitHub.
+3. Choose **Deploy from a branch**, select the deployment branch, and use `/ (root)`.
+4. The site will be available at `https://dinusha-ekanayake.github.io`.
 
-- **Theme:** Dark-first cinematic with warm amber (#D4A853), teal (#2EC4B6), coral (#E85D75)
-- **Fonts:** Syne (display) + Plus Jakarta Sans (body) + Fira Code (mono)
-- **Hero:** Animated constellation canvas with connected particle nodes
-- **Identity Cards:** 4 cards for Code / Capture / Explore / Lead
-- **Skills:** Bento grid with colored glow effects
-- **Photography:** Masonry gallery with hover overlays
-- **Travel:** Topographic SVG + stats grid
-- **Scroll progress bar** at the top
-- **Dark/Light toggle** with saved preference
+The deploy bundle consists of:
 
-## ✏️ Customise
+```text
+index.html
+assets/
+  Dinusha-Ekanayake-CV.pdf
+  profile.jpg
+  icons/
+```
 
-| What | Where |
-|------|-------|
-| Name/bio | Search `Dinusha Ekanayake` in HTML |
-| Accent colors | CSS `:root` variables at the top |
-| Admin password | `const PW='dinusha2024'` in JS |
-| Email | Search `dinushabawantha2003@gmail.com` |
-| Social links | Contact section in HTML |
+## Customize
 
-## 📸 Photo Albums
+- Portfolio content and interactions: `index.html`
+- Color and typography tokens: the `:root` block in `index.html`
+- Profile image: `assets/profile.jpg`
+- Downloadable CV: `assets/Dinusha-Ekanayake-CV.pdf`
+- Contact form delivery: replace `YOUR_FORM_ID` with a Formspree form ID; until then, the form opens the visitor’s email client.
 
-Upload images anywhere (Imgur, Cloudinary, GitHub repo), then use the dashboard to add album cover URLs.
+## Validation
+
+The portfolio is runtime-tested in Microsoft Edge for dynamic project, certification, volunteering, and 3D-logo initialization. JavaScript syntax and core HTML structure are also validated before deployment.
