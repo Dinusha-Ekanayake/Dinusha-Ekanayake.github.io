@@ -133,7 +133,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 .hero-left{display:flex;flex-direction:column;min-width:0}
 .hero-tag{font-family:'Fira Code',monospace;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fu .8s .3s forwards}
 .hero-tag::before{content:'›';font-size:1rem}
-.hero-h1{font-size:clamp(3.2rem,7.2vw,6.5rem);opacity:0;animation:fu .8s .45s forwards;margin-bottom:1.5rem;line-height:.95}
+.hero-h1{font-size:clamp(3.2rem,6.5vw,5.8rem);opacity:0;animation:fu .8s .45s forwards;margin-bottom:1.5rem;line-height:.95}
 .hero-h1 .line2{background:linear-gradient(135deg,var(--gold),var(--coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block}
 .hero-sub{display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;opacity:0;animation:fu .8s .6s forwards;font-size:1.05rem}
 .hero-prefix{color:var(--tx3)}#typed{color:var(--tx);font-weight:600}
@@ -167,8 +167,8 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 @keyframes orbitSpin{to{transform:rotate(360deg)}}@keyframes orbitSpinReverse{to{transform:rotate(-360deg)}}@keyframes logoCounter{to{transform:rotate(-360deg)}}@keyframes logoCounterReverse{to{transform:rotate(360deg)}}
 
 /* Hero stat bar */
-.hero-stats{position:absolute;bottom:clamp(2rem,4vw,3.5rem);left:0;right:0;z-index:3;padding:0 clamp(1.5rem,5vw,5rem)}
-.hero-stats-inner{max-width:1320px;margin:0 auto;display:flex;gap:3rem;opacity:0;animation:fu .8s 1.2s forwards}
+.hero-stats{position:absolute;bottom:clamp(2rem,4vw,3.5rem);left:0;right:0;z-index:3;padding:0}
+.hero-stats-inner{width:100%;max-width:1320px;margin:0 auto;padding:0 clamp(1.5rem,5vw,5rem);display:flex;gap:3rem;opacity:0;animation:fu .8s 1.2s forwards}
 .hs{display:flex;align-items:baseline;gap:.5rem}
 .hs-n{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:var(--gold)}
 .hs-l{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3)}
