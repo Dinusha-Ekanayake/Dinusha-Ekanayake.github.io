@@ -177,11 +177,13 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 .sbar{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2s infinite}
 
 /* ===== SECTIONS ===== */
-.sw{padding:clamp(5rem,10vw,9rem) 0;position:relative;overflow:hidden;isolation:isolate}
-.sw-alt{background:var(--bg2);transition:background .5s var(--ease)}
-[data-theme="light"] .sw-warm{background:linear-gradient(180deg,#FDF8F0 0%,#FAF5EB 100%)}
-[data-theme="light"] .sw-sage{background:linear-gradient(180deg,#F0F5F2 0%,#E8F0EC 100%)}
-[data-theme="light"] .sw-sky{background:linear-gradient(180deg,#F0F4F8 0%,#E8EEF4 100%)}
+.sw{--section-bg:var(--bg);--section-edge-start:transparent;--section-edge-end:transparent;--section-blend:clamp(72px,8vw,128px);padding:clamp(5rem,10vw,9rem) 0;position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,var(--section-edge-start) 0,var(--section-bg) var(--section-blend),var(--section-bg) calc(100% - var(--section-blend)),var(--section-edge-end) 100%);transition:background .6s var(--ease)}
+.sw+.sw{margin-top:-1px}
+.sw-alt{--section-bg:var(--bg2)}
+.sw-warm:has(+.sw-warm){--section-edge-end:var(--section-bg)}.sw-warm+.sw-warm{--section-edge-start:var(--section-bg)}
+[data-theme="light"] .sw-warm{--section-bg:#FAF5EB}
+[data-theme="light"] .sw-sage{--section-bg:#ECF3EF}
+[data-theme="light"] .sw-sky{--section-bg:#ECF1F6}
 .sw>.wrap{position:relative;z-index:1}
 .sw::before{content:'';position:absolute;inset:-6%;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='360' viewBox='0 0 720 360'%3E%3Cg fill='none' stroke='%232EC4B6' stroke-opacity='.22' stroke-width='1'%3E%3Cpath d='M52 206L154 94l126 70 104-105 132 114 146-91M154 94l34 176 92-106 130 110 106-101 80 121M52 206l136 64 92-106 104-105M410 274l106-101 146-91M384 59l26 215 186 20'/%3E%3C/g%3E%3Cg fill='%23D4A853' fill-opacity='.32'%3E%3Ccircle cx='52' cy='206' r='3'/%3E%3Ccircle cx='154' cy='94' r='5'/%3E%3Ccircle cx='188' cy='270' r='3'/%3E%3Ccircle cx='280' cy='164' r='6'/%3E%3Ccircle cx='384' cy='59' r='3'/%3E%3Ccircle cx='410' cy='274' r='5'/%3E%3Ccircle cx='516' cy='173' r='6'/%3E%3Ccircle cx='596' cy='294' r='3'/%3E%3Ccircle cx='662' cy='82' r='5'/%3E%3C/g%3E%3Cg fill='%23E85D75' fill-opacity='.26'%3E%3Ccircle cx='280' cy='164' r='12'/%3E%3Ccircle cx='516' cy='173' r='11'/%3E%3C/g%3E%3C/svg%3E");background-repeat:no-repeat;background-size:min(720px,58vw) auto;background-position:right -70px top 12%;opacity:.42;mask-image:linear-gradient(90deg,transparent 30%,#000 78%,transparent);animation:aiNetwork 8s ease-in-out infinite alternate}
 .sw::after{content:'';position:absolute;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(460px circle at var(--ai-x,82%) var(--ai-y,38%),rgba(46,196,182,.13),transparent 68%),linear-gradient(105deg,transparent 42%,rgba(46,196,182,.035) 50%,transparent 58%);background-size:auto,220% 100%;background-position:center,-120% 0;transition:background .15s linear;animation:aiScan 11s linear infinite}
@@ -228,25 +230,35 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 /* ===== EDUCATION ===== */
 .edu-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:1.3rem;margin-top:3rem}.edu-card{position:relative;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:clamp(1.6rem,3vw,2.5rem);overflow:hidden;transition:transform .35s var(--ease),border-color .35s}.edu-card:hover{transform:translateY(-5px);border-color:var(--bdr2)}.edu-card::after{content:'';position:absolute;width:230px;height:230px;border-radius:50%;right:-100px;top:-120px;background:var(--teal);filter:blur(90px);opacity:.1}.edu-card:nth-child(2)::after{background:var(--gold)}.edu-kicker{font:500 .68rem 'Fira Code',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem}.edu-card:nth-child(2) .edu-kicker{color:var(--gold)}.edu-degree{font-family:'Syne',sans-serif;font-size:clamp(1.25rem,2.4vw,1.85rem);font-weight:700;max-width:650px}.edu-org{color:var(--tx2);margin-top:.55rem}.edu-meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}.edu-meta span{font:500 .72rem 'Fira Code',monospace;padding:.42rem .7rem;border-radius:7px;background:var(--bg);border:1px solid var(--bdr);color:var(--tx2)}.edu-note{font-size:.87rem;color:var(--tx3);line-height:1.7;margin-top:1.3rem;max-width:700px}
 
-/* ===== SKILLS BENTO ===== */
-.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(180px,auto);gap:1.2rem;margin-top:3rem}
-.bento-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:2rem;position:relative;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
-.bento-card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--bdr2)}
-.b-span6{grid-column:span 6}.b-span4{grid-column:span 4}.b-span3{grid-column:span 3}.b-span8{grid-column:span 8}
-.b-icon{font-size:1.8rem;margin-bottom:1.2rem}
-.b-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1rem}
-.tags{display:flex;flex-wrap:wrap;gap:.5rem}
-.tag{font-size:.76rem;font-family:'Fira Code',monospace;padding:.38rem .85rem;background:var(--bg);border:1px solid var(--bdr);border-radius:7px;color:var(--tx2);transition:all .25s;cursor:default}
-.tag:hover{border-color:var(--gold);color:var(--gold);background:var(--goldA)}
-.bc-glow{position:absolute;width:220px;height:220px;border-radius:50%;filter:blur(80px);opacity:.07;pointer-events:none;transition:opacity .4s}
-.bento-card:hover .bc-glow{opacity:.16}
-.b-code-deco{position:absolute;bottom:1rem;right:1.5rem;font-family:'Fira Code',monospace;font-size:.6rem;color:var(--tx3);opacity:.15;line-height:1.6;text-align:right;pointer-events:none;white-space:pre}
-.skill-levels{display:flex;flex-direction:column;gap:.7rem;margin-top:.8rem}
-.skill-lv{display:flex;align-items:center;gap:.8rem}
-.skill-lv-name{font-size:.78rem;color:var(--tx2);width:80px;flex-shrink:0}
-.skill-lv-bar{flex:1;height:4px;background:var(--bdr);border-radius:4px;overflow:hidden}
-.skill-lv-fill{height:100%;border-radius:4px;transition:width 1.2s var(--ease)}
-.slv-gold .skill-lv-fill{background:var(--gold)}.slv-teal .skill-lv-fill{background:var(--teal)}.slv-coral .skill-lv-fill{background:var(--coral)}
+/* ===== AI CAPABILITY CONSOLE ===== */
+.skills-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,430px);gap:3rem;align-items:end}
+.skills-head .label{margin-bottom:1.35rem}.skills-lede{font-size:.96rem;max-width:430px;margin:0 0 .4rem auto}
+.skills-status{display:inline-flex;align-items:center;gap:.65rem;margin-top:1.2rem;padding:.48rem .85rem;border:1px solid rgba(46,196,182,.25);border-radius:999px;background:var(--tealB);color:var(--teal);font:500 .67rem 'Fira Code',monospace;letter-spacing:.08em;text-transform:uppercase}
+.skills-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 5px var(--tealA);animation:pulse 1.8s infinite}
+.skill-console{position:relative;margin-top:3rem;padding:1px;border-radius:26px;background:linear-gradient(125deg,rgba(46,196,182,.42),rgba(255,255,255,.05) 28%,rgba(212,168,83,.2) 68%,rgba(232,93,117,.35));box-shadow:0 30px 90px rgba(0,0,0,.28);overflow:hidden}
+.skill-console::before{content:'';position:absolute;inset:1px;border-radius:25px;background:linear-gradient(135deg,var(--bg2),rgba(14,14,14,.92));pointer-events:none}
+[data-theme="light"] .skill-console::before{background:linear-gradient(135deg,rgba(255,255,255,.97),rgba(242,239,234,.96))}
+.skill-console-inner{position:relative;padding:clamp(1rem,2.3vw,2rem)}
+.skill-console-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.2rem .35rem 1.2rem;border-bottom:1px solid var(--bdr)}
+.console-dots{display:flex;gap:.45rem}.console-dots i{display:block;width:7px;height:7px;border-radius:50%;background:var(--tx3)}.console-dots i:nth-child(1){background:var(--coral)}.console-dots i:nth-child(2){background:var(--gold)}.console-dots i:nth-child(3){background:var(--teal)}
+.console-path{font:400 .65rem 'Fira Code',monospace;color:var(--tx3);letter-spacing:.08em}.console-mode{display:flex;align-items:center;gap:.45rem;font:500 .62rem 'Fira Code',monospace;color:var(--teal);text-transform:uppercase;letter-spacing:.1em}.console-mode::before{content:'◆';font-size:.48rem;animation:statusBlink 1.7s ease-in-out infinite}
+@keyframes statusBlink{50%{opacity:.25}}
+.skill-marquee{position:relative;margin:1.25rem 0;overflow:hidden;border:1px solid var(--bdr);border-radius:16px;background:rgba(255,255,255,.018)}
+.skill-marquee::before,.skill-marquee::after{content:'';position:absolute;z-index:3;top:0;bottom:0;width:90px;pointer-events:none}.skill-marquee::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent)}.skill-marquee::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent)}
+[data-theme="light"] .skill-marquee::before{background:linear-gradient(90deg,var(--surf),transparent)}[data-theme="light"] .skill-marquee::after{background:linear-gradient(-90deg,var(--surf),transparent)}
+.skill-marquee-track{display:flex;width:max-content;gap:.75rem;padding:.85rem;animation:skillMarquee 28s linear infinite;will-change:transform}.skill-marquee:hover .skill-marquee-track{animation-play-state:paused}
+@keyframes skillMarquee{to{transform:translateX(calc(-50% - .375rem))}}
+.skill-brand{display:flex;align-items:center;gap:.65rem;min-width:max-content;padding:.58rem .82rem;border:1px solid var(--bdr);border-radius:11px;background:var(--surf);color:var(--tx2);font:500 .68rem 'Fira Code',monospace;transition:border-color .25s,transform .25s,color .25s}.skill-brand:hover{transform:translateY(-2px);border-color:rgba(46,196,182,.48);color:var(--tx)}.skill-brand img{width:22px;height:22px;object-fit:contain}[data-theme="dark"] .skill-brand img[src*="nextjs"]{filter:invert(1)}
+.skill-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.skill-card{--skill-accent:var(--teal);--skill-tint:var(--tealA);--tilt-x:0deg;--tilt-y:0deg;position:relative;min-height:250px;padding:1.45rem;border:1px solid var(--bdr);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));overflow:hidden;transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));transform-style:preserve-3d;transition:opacity .75s var(--ease),transform .35s var(--ease),border-color .35s,box-shadow .35s,background .35s}
+.skill-card.rv{transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(40px)}.skill-card.rv.vis{transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(0)}.skill-card.rv.vis:hover{transform:perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-5px)}
+.skill-card[data-accent="gold"]{--skill-accent:var(--gold);--skill-tint:var(--goldA)}.skill-card[data-accent="coral"]{--skill-accent:var(--coral);--skill-tint:var(--coralA)}
+.skill-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--spot-x,80%) var(--spot-y,10%),var(--skill-tint),transparent 42%);opacity:.55;transition:opacity .35s}.skill-card::after{content:'';position:absolute;left:1.45rem;right:1.45rem;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--skill-accent),transparent);opacity:.4;transform:scaleX(.25);transition:transform .4s var(--ease),opacity .4s}
+.skill-card:hover,.skill-card:focus-within{border-color:color-mix(in srgb,var(--skill-accent) 48%,transparent);box-shadow:0 18px 55px rgba(0,0,0,.22),0 0 45px var(--skill-tint);background:linear-gradient(145deg,var(--skill-tint),rgba(255,255,255,.015))}.skill-card:hover::after{transform:scaleX(1);opacity:1}
+.skill-card>*{position:relative;z-index:1}.skill-card-wide{grid-column:span 2}
+.skill-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem}.skill-glyph{width:44px;height:44px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--skill-accent) 35%,transparent);border-radius:13px;background:var(--skill-tint);color:var(--skill-accent);box-shadow:inset 0 0 20px rgba(255,255,255,.02)}.skill-glyph svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.skill-index{font:500 .62rem 'Fira Code',monospace;color:var(--tx3);letter-spacing:.16em}.skill-title{font:700 1.15rem 'Syne',sans-serif;margin-bottom:.45rem}.skill-copy{font-size:.78rem;line-height:1.65;color:var(--tx3);margin-bottom:1.2rem;max-width:50ch}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.45rem}.skill-tag{padding:.36rem .68rem;border:1px solid var(--bdr);border-radius:7px;background:rgba(0,0,0,.12);color:var(--tx2);font:400 .68rem 'Fira Code',monospace;transition:color .22s,border-color .22s,background .22s,transform .22s}.skill-tag:hover{color:var(--skill-accent);border-color:color-mix(in srgb,var(--skill-accent) 52%,transparent);background:var(--skill-tint);transform:translateY(-2px)}
+[data-theme="light"] .skill-card{background:rgba(255,255,255,.52)}[data-theme="light"] .skill-tag{background:rgba(255,255,255,.5)}
 
 /* ===== EXPERIENCE ===== */
 .exp-wrap{position:relative;margin-top:3rem}.exp-line{position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--bdr)}
@@ -346,7 +358,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 .fg textarea{resize:vertical;min-height:130px}
 
 /* ===== FOOTER ===== */
-footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;position:relative;overflow:hidden}
+footer{border-top:0;padding:4rem clamp(1.5rem,5vw,5rem) 3rem;position:relative;overflow:hidden;background:linear-gradient(180deg,transparent,var(--bg2));transition:background .6s var(--ease)}
 .ft-big{font-family:'Syne',sans-serif;font-size:clamp(3rem,10vw,9rem);font-weight:800;line-height:.95;opacity:.04;position:absolute;bottom:-1rem;right:-1rem;pointer-events:none;user-select:none}
 .ft-top{display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:2rem;position:relative;z-index:1}
 .ft-left small{display:block;font-size:.78rem;color:var(--tx3);margin-top:.3rem}
@@ -408,10 +420,10 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
 /* ===== RESPONSIVE ===== */
 @media(max-width:1200px){.n-links{gap:1.35rem}.n-links a{font-size:.74rem}}
 @media(max-width:980px){.n-links{display:none}.burger{display:flex}}
-@media(max-width:1024px){.id-grid{grid-template-columns:repeat(2,1fr)}.pipeline-flow{display:none}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 6}.award-grid{grid-template-columns:1fr 1fr}.proj-card.featured{grid-column:auto}}
+@media(max-width:1024px){.id-grid{grid-template-columns:repeat(2,1fr)}.pipeline-flow{display:none}.skill-matrix{grid-template-columns:repeat(2,minmax(0,1fr))}.award-grid{grid-template-columns:1fr 1fr}.proj-card.featured{grid-column:auto}}
 @media(max-width:900px){#hero{padding-bottom:9rem}.hero-inner{grid-template-columns:1fr;gap:1rem;padding-top:3rem}.hero-right{display:flex;margin:0 auto}.hero-photo-wrap{width:min(78vw,410px)}.about-grid{grid-template-columns:1fr}.about-img-wrap{max-width:400px}.contact-grid{grid-template-columns:1fr}.row2{grid-template-columns:1fr}}
-@media(max-width:768px){.n-links{display:none}.burger{display:flex}.id-grid{grid-template-columns:1fr}.id-card{min-height:340px}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 12}.about-stats{grid-template-columns:repeat(3,1fr)}.hero-stats-inner{gap:2rem;flex-wrap:wrap}.edu-grid,.award-grid{grid-template-columns:1fr}}
-@media(max-width:500px){.about-stats{grid-template-columns:1fr 1fr}footer .ft-top{flex-direction:column}.ft-links{flex-wrap:wrap;gap:1.5rem}.hero-stats-inner{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.hs{display:block}.hero-sub{align-items:flex-start;flex-direction:column;gap:.2rem}.proj-grid{grid-template-columns:1fr}.hero-photo-wrap{width:min(84vw,350px)}.logo-chip{width:43px;height:43px;padding:8px}.orbit-inner .logo-chip{width:38px;height:38px;padding:7px}.logo-upright{left:-22px;top:-22px}}
+@media(max-width:768px){.n-links{display:none}.burger{display:flex}.id-grid{grid-template-columns:1fr}.id-card{min-height:340px}.skills-head{grid-template-columns:1fr;gap:1.25rem}.skills-lede{margin-left:0}.skill-matrix{grid-template-columns:1fr}.skill-card-wide{grid-column:span 1}.about-stats{grid-template-columns:repeat(3,1fr)}.hero-stats-inner{gap:2rem;flex-wrap:wrap}.edu-grid,.award-grid{grid-template-columns:1fr}}
+@media(max-width:500px){.about-stats{grid-template-columns:1fr 1fr}footer .ft-top{flex-direction:column}.ft-links{flex-wrap:wrap;gap:1.5rem}.hero-stats-inner{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.hs{display:block}.hero-sub{align-items:flex-start;flex-direction:column;gap:.2rem}.proj-grid{grid-template-columns:1fr}.hero-photo-wrap{width:min(84vw,350px)}.logo-chip{width:43px;height:43px;padding:8px}.orbit-inner .logo-chip{width:38px;height:38px;padding:7px}.logo-upright{left:-22px;top:-22px}.skill-console-inner{padding:.75rem}.console-path{display:none}.skill-card{min-height:0;padding:1.2rem}.skill-marquee::before,.skill-marquee::after{width:45px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.cursor-star{display:none!important}.parallax-el,.rv{transform:none!important}.rv,.hero-tag,.hero-h1,.hero-sub,.hero-pills,.hero-ctas,.availability,.hero-right,.hero-stats-inner,.hero-scroll{opacity:1!important}.preloader{display:none!important}}
 </style>
 </head>
@@ -538,46 +550,66 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
 <!-- SKILLS -->
 <div class="sw sw-sage">
 <section id="skills" class="wrap">
-  <div class="label label-teal rv">Technical Arsenal</div>
-  <h2 class="rv rd1 parallax-el">Skills &amp; Tools</h2>
-  <div class="bento">
-    <div class="bento-card b-span8 rv">
-      <div class="bc-glow" style="top:-60px;right:-60px;background:var(--teal)"></div>
-      <div class="b-code-deco">pipeline.fit(X_train, y_train)
-shap_values = explainer(X_test)
-deploy(model, api="FastAPI")</div>
-      <div class="b-icon mono">AI</div><div class="b-title">Machine Learning &amp; Deep Learning</div>
-      <div class="tags"><span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">LightGBM</span><span class="tag">SHAP</span><span class="tag">DistilBERT</span><span class="tag">Transformers</span><span class="tag">Hugging Face</span></div>
+  <div class="skills-head">
+    <div>
+      <div class="label label-teal rv">Technical Arsenal</div>
+      <h2 class="rv rd1 parallax-el">Skills &amp; Tools</h2>
     </div>
-    <div class="bento-card b-span4 rv rd1">
-      <div class="bc-glow" style="top:-60px;left:-60px;background:var(--gold)"></div>
-      <div class="b-icon mono">{ }</div><div class="b-title">Programming Languages</div>
-      <div class="tags"><span class="tag">Python</span><span class="tag">R</span><span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">C</span><span class="tag">C++</span><span class="tag">PHP</span><span class="tag">Prolog</span></div>
+    <div class="rv rd2">
+      <p class="skills-lede">A practical stack for taking intelligent systems from raw data and experiments to reliable, user-facing products.</p>
+      <div class="skills-status">Continuously learning</div>
     </div>
-    <div class="bento-card b-span4 rv rd1">
-      <div class="bc-glow" style="bottom:-60px;right:-60px;background:var(--coral)"></div>
-      <div class="b-icon mono">LLM</div><div class="b-title">LLMs &amp; Agentic AI</div>
-      <div class="tags"><span class="tag">LangChain</span><span class="tag">LangGraph</span><span class="tag">RAG</span><span class="tag">Groq API</span><span class="tag">Llama 3.3</span><span class="tag">Multi-Agent Systems</span><span class="tag">Fine-Tuning</span></div>
-    </div>
-    <div class="bento-card b-span4 rv rd2">
-      <div class="bc-glow" style="top:-60px;right:-60px;background:var(--teal)"></div>
-      <div class="b-icon mono">API</div><div class="b-title">Full-Stack &amp; APIs</div>
-      <div class="tags"><span class="tag">FastAPI</span><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Tailwind CSS</span></div>
-    </div>
-    <div class="bento-card b-span4 rv rd3">
-      <div class="bc-glow" style="bottom:-60px;left:-60px;background:var(--gold)"></div>
-      <div class="b-icon mono">DB</div><div class="b-title">Data, Cloud &amp; Deployment</div>
-      <div class="tags"><span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">Supabase</span><span class="tag">Firebase</span><span class="tag">AWS EC2</span><span class="tag">Vercel</span><span class="tag">Render</span></div>
-    </div>
-    <div class="bento-card b-span6 rv rd2">
-      <div class="bc-glow" style="top:-60px;left:-60px;background:var(--teal)"></div>
-      <div class="b-icon mono">DATA</div><div class="b-title">Analysis &amp; Experimentation</div>
-      <div class="tags"><span class="tag">NumPy</span><span class="tag">Pandas</span><span class="tag">Matplotlib</span><span class="tag">Seaborn</span><span class="tag">Jupyter</span><span class="tag">Time Series</span><span class="tag">Survival Analysis</span></div>
-    </div>
-    <div class="bento-card b-span6 rv rd3">
-      <div class="bc-glow" style="top:-40px;right:-40px;background:var(--coral)"></div>
-      <div class="b-icon mono">UX</div><div class="b-title">Tools, Design &amp; Collaboration</div>
-      <div class="tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Postman</span><span class="tag">Thunder Client</span><span class="tag">Figma</span><span class="tag">Cisco Packet Tracer</span><span class="tag">Leadership</span><span class="tag">Analytical Thinking</span><span class="tag">Problem Solving</span></div>
+  </div>
+  <div class="skill-console rv rd2">
+    <div class="skill-console-inner">
+      <div class="skill-console-bar" aria-hidden="true">
+        <div class="console-dots"><i></i><i></i><i></i></div>
+        <span class="console-path">~/dinusha/ai-stack</span>
+        <span class="console-mode">systems online</span>
+      </div>
+      <div class="skill-marquee" aria-label="Featured technology stack">
+        <div class="skill-marquee-track">
+          <div class="skill-brand"><img src="assets/icons/python.svg" alt=""><span>Python</span></div><div class="skill-brand"><img src="assets/icons/pytorch.svg" alt=""><span>PyTorch</span></div><div class="skill-brand"><img src="assets/icons/tensorflow.svg" alt=""><span>TensorFlow</span></div><div class="skill-brand"><img src="assets/icons/scikitlearn.svg" alt=""><span>Scikit-learn</span></div><div class="skill-brand"><img src="assets/icons/huggingface.svg" alt=""><span>Hugging Face</span></div><div class="skill-brand"><img src="assets/icons/fastapi.svg" alt=""><span>FastAPI</span></div><div class="skill-brand"><img src="assets/icons/react.svg" alt=""><span>React</span></div><div class="skill-brand"><img src="assets/icons/nextjs.svg" alt=""><span>Next.js</span></div><div class="skill-brand"><img src="assets/icons/postgresql.svg" alt=""><span>PostgreSQL</span></div><div class="skill-brand"><img src="assets/icons/numpy.svg" alt=""><span>NumPy</span></div>
+          <div class="skill-brand" aria-hidden="true"><img src="assets/icons/python.svg" alt=""><span>Python</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/pytorch.svg" alt=""><span>PyTorch</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/tensorflow.svg" alt=""><span>TensorFlow</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/scikitlearn.svg" alt=""><span>Scikit-learn</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/huggingface.svg" alt=""><span>Hugging Face</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/fastapi.svg" alt=""><span>FastAPI</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/react.svg" alt=""><span>React</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/nextjs.svg" alt=""><span>Next.js</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/postgresql.svg" alt=""><span>PostgreSQL</span></div><div class="skill-brand" aria-hidden="true"><img src="assets/icons/numpy.svg" alt=""><span>NumPy</span></div>
+        </div>
+      </div>
+      <div class="skill-matrix">
+        <article class="skill-card skill-card-wide rv" data-accent="teal">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="m7 7.5 3 2.8m7-2.8-3 2.8m-7 6.2 3-2.8m7 2.8-3-2.8"/></svg></span><span class="skill-index">01 / MODELS</span></div>
+          <h3 class="skill-title">Machine Learning &amp; Deep Learning</h3><p class="skill-copy">Building, evaluating, and explaining models across structured data, vision, NLP, forecasting, and other AI problem spaces.</p>
+          <div class="skill-tags"><span class="skill-tag">PyTorch</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">XGBoost</span><span class="skill-tag">LightGBM</span><span class="skill-tag">SHAP</span><span class="skill-tag">DistilBERT</span><span class="skill-tag">Transformers</span><span class="skill-tag">Hugging Face</span></div>
+        </article>
+        <article class="skill-card rv rd1" data-accent="coral">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6h8a4 4 0 0 1 4 4v3a4 4 0 0 1-4 4h-3l-3.5 3v-3H8a4 4 0 0 1-4-4v-3a4 4 0 0 1 4-4Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg></span><span class="skill-index">02 / AGENTS</span></div>
+          <h3 class="skill-title">LLMs &amp; Agentic AI</h3><p class="skill-copy">Creating grounded assistants, retrieval pipelines, and coordinated agent workflows.</p>
+          <div class="skill-tags"><span class="skill-tag">LangChain</span><span class="skill-tag">LangGraph</span><span class="skill-tag">RAG</span><span class="skill-tag">Groq API</span><span class="skill-tag">Llama 3.3</span><span class="skill-tag">Multi-Agent Systems</span><span class="skill-tag">Fine-Tuning</span></div>
+        </article>
+        <article class="skill-card rv rd1" data-accent="gold">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 9-4 3 4 3m8-6 4 3-4 3M14 5l-4 14"/></svg></span><span class="skill-index">03 / CODE</span></div>
+          <h3 class="skill-title">Programming Languages</h3><p class="skill-copy">A multi-language foundation for models, systems, interfaces, and computational problem solving.</p>
+          <div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">R</span><span class="skill-tag">Java</span><span class="skill-tag">JavaScript</span><span class="skill-tag">TypeScript</span><span class="skill-tag">C</span><span class="skill-tag">C++</span><span class="skill-tag">PHP</span><span class="skill-tag">Prolog</span></div>
+        </article>
+        <article class="skill-card rv rd2" data-accent="teal">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 9h16M8 5v4"/><path d="m9 14 2 2 4-4"/></svg></span><span class="skill-index">04 / PRODUCT</span></div>
+          <h3 class="skill-title">Full-Stack &amp; APIs</h3><p class="skill-copy">Connecting model intelligence to fast, usable, and maintainable web experiences.</p>
+          <div class="skill-tags"><span class="skill-tag">FastAPI</span><span class="skill-tag">Node.js</span><span class="skill-tag">Express</span><span class="skill-tag">React</span><span class="skill-tag">Next.js</span><span class="skill-tag">Tailwind CSS</span></div>
+        </article>
+        <article class="skill-card rv rd3" data-accent="gold">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span><span class="skill-index">05 / PLATFORM</span></div>
+          <h3 class="skill-title">Data, Cloud &amp; Deployment</h3><p class="skill-copy">Moving data and services through dependable storage, cloud, and delivery layers.</p>
+          <div class="skill-tags"><span class="skill-tag">PostgreSQL</span><span class="skill-tag">MySQL</span><span class="skill-tag">Supabase</span><span class="skill-tag">Firebase</span><span class="skill-tag">AWS EC2</span><span class="skill-tag">Vercel</span><span class="skill-tag">Render</span></div>
+        </article>
+        <article class="skill-card rv rd2" data-accent="coral">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9m5 10V5m6 14v-7m5 7V3"/><path d="m4 7 5-4 6 7 5-9"/></svg></span><span class="skill-index">06 / INSIGHT</span></div>
+          <h3 class="skill-title">Analysis &amp; Experimentation</h3><p class="skill-copy">Exploring evidence, testing hypotheses, and communicating patterns with clarity.</p>
+          <div class="skill-tags"><span class="skill-tag">NumPy</span><span class="skill-tag">Pandas</span><span class="skill-tag">Matplotlib</span><span class="skill-tag">Seaborn</span><span class="skill-tag">Jupyter</span><span class="skill-tag">Time Series</span><span class="skill-tag">Survival Analysis</span></div>
+        </article>
+        <article class="skill-card skill-card-wide rv rd3" data-accent="teal">
+          <div class="skill-card-head"><span class="skill-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7l8 4 8-4-8-4Z"/><path d="m4 12 8 4 8-4M4 17l8 4 8-4"/></svg></span><span class="skill-index">07 / DELIVERY</span></div>
+          <h3 class="skill-title">Tools, Design &amp; Collaboration</h3><p class="skill-copy">Pairing engineering discipline with visual thinking, clear communication, and collaborative ownership.</p>
+          <div class="skill-tags"><span class="skill-tag">Git</span><span class="skill-tag">GitHub</span><span class="skill-tag">Postman</span><span class="skill-tag">Thunder Client</span><span class="skill-tag">Figma</span><span class="skill-tag">Cisco Packet Tracer</span><span class="skill-tag">Leadership</span><span class="skill-tag">Analytical Thinking</span><span class="skill-tag">Problem Solving</span></div>
+        </article>
+      </div>
     </div>
   </div>
 </section></div>
@@ -781,7 +813,7 @@ setTimeout(finishLoading,1800);
 const dot=document.getElementById('cursorDot');
 let mx=0,my=0,isHover=false;
 const starColors=['rgba(212,168,83,','rgba(46,196,182,','rgba(232,93,117,','rgba(240,236,226,'];
-const interactives='a,button,.proj-card,.cert-card,.id-card,.bento-card,.soc,.pill,.tag,.btn,.btt,.modal-close';
+const interactives='a,button,.proj-card,.cert-card,.id-card,.skill-card,.skill-brand,.soc,.pill,.skill-tag,.btn,.btt,.modal-close';
 
 function spawnStar(x,y){
   const s=document.createElement('div');
@@ -887,10 +919,6 @@ const obs=()=>document.querySelectorAll('.rv:not(.vis)').forEach(el=>io.observe(
 const cio=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const el=x.target,end=+el.dataset.count,dur=1800;let st=null;function step(ts){if(!st)st=ts;const p=Math.min((ts-st)/dur,1);el.textContent=Math.floor(p*end)+(end>=100?'+':'');if(p<1)requestAnimationFrame(step);else el.textContent=end+(end>=100?'+':'')}requestAnimationFrame(step);cio.unobserve(x.target)}})},{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 
-// SKILL BARS ANIMATE
-const sio=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.w+'%';sio.unobserve(x.target)}})},{threshold:.3});
-document.querySelectorAll('.skill-lv-fill').forEach(el=>sio.observe(el));
-
 // RENDER FUNCTIONS
 const g=id=>document.getElementById(id);
 
@@ -992,7 +1020,7 @@ async function sendMsg(){
 function toast(msg){const t=g('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
 
 // MOUSE-FOLLOWING GLOW ON CARDS
-document.querySelectorAll('.glow-card,.bento-card,.proj-card,.stat').forEach(card=>{
+document.querySelectorAll('.glow-card,.skill-card,.proj-card,.stat').forEach(card=>{
   card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--gx',(e.clientX-r.left)+'px');card.style.setProperty('--gy',(e.clientY-r.top)+'px');if(!card.querySelector('.mouse-glow')){const gl=document.createElement('div');gl.className='mouse-glow';gl.style.cssText='position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.1) 0%,transparent 70%);pointer-events:none;z-index:0;transition:opacity .3s;opacity:0';card.style.position='relative';card.style.overflow='hidden';card.appendChild(gl)}const gl=card.querySelector('.mouse-glow');gl.style.left=(e.clientX-r.left-150)+'px';gl.style.top=(e.clientY-r.top-150)+'px';gl.style.opacity='1'});
   card.addEventListener('mouseleave',()=>{const gl=card.querySelector('.mouse-glow');if(gl)gl.style.opacity='0'});
 });
@@ -1015,7 +1043,7 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
 
 // INTERACTIVE PIPELINE CARD DEPTH
 if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-  document.querySelectorAll('.id-card').forEach(card=>{
+  document.querySelectorAll('.id-card,.skill-card').forEach(card=>{
     card.addEventListener('pointermove',event=>{const r=card.getBoundingClientRect(),x=(event.clientX-r.left)/r.width,y=(event.clientY-r.top)/r.height;card.style.setProperty('--spot-x',`${x*100}%`);card.style.setProperty('--spot-y',`${y*100}%`);card.style.setProperty('--tilt-x',`${(.5-y)*6}deg`);card.style.setProperty('--tilt-y',`${(x-.5)*7}deg`)},{passive:true});
     card.addEventListener('pointerleave',()=>{card.style.removeProperty('--spot-x');card.style.removeProperty('--spot-y');card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')},{passive:true});
   });
