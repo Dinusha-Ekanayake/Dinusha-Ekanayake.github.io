@@ -840,7 +840,7 @@ document.addEventListener('visibilitychange',()=>canvasActive=!document.hidden);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function render(now){
     const dt=Math.min((now-last)/16.667,2);last=now;
-    if(!reduced){yawSpeed+=(targetYaw-yawSpeed)*.055;pitchSpeed+=(targetPitch-pitchSpeed)*.055;yaw+=yawSpeed*dt;pitch+=pitchSpeed*dt}
+    if(!reduced){yawSpeed+=(targetYaw-yawSpeed)*.14;pitchSpeed+=(targetPitch-pitchSpeed)*.14;yaw+=yawSpeed*dt;pitch+=pitchSpeed*dt}
     const cy=Math.cos(yaw),sy=Math.sin(yaw),cx=Math.cos(pitch),sx=Math.sin(pitch);
     const radiusX=wrap.clientWidth*.42,radiusY=wrap.clientWidth*.37;
     points.forEach(({el,x,y,z})=>{
@@ -852,7 +852,7 @@ document.addEventListener('visibilitychange',()=>canvasActive=!document.hidden);
     });
     if(!reduced)requestAnimationFrame(render);
   }
-  wrap.addEventListener('pointermove',event=>{const r=wrap.getBoundingClientRect(),nx=(event.clientX-r.left)/r.width-.5,ny=(event.clientY-r.top)/r.height-.5;targetYaw=.002+nx*.018;targetPitch=-ny*.012},{passive:true});
+  wrap.addEventListener('pointermove',event=>{const r=wrap.getBoundingClientRect(),nx=(event.clientX-r.left)/r.width-.5,ny=(event.clientY-r.top)/r.height-.5;targetYaw=.002+nx*.038;targetPitch=-ny*.028},{passive:true});
   wrap.addEventListener('pointerleave',()=>{targetYaw=.0028;targetPitch=.0007},{passive:true});
   render(last);
 })();
