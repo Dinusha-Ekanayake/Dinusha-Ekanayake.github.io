@@ -1,51 +1,45 @@
-# Dinusha Ekanayake — Portfolio
+# Dinusha Ekanayake — AI/ML Portfolio
 
-Dark cinematic portfolio with animated constellation background, identity-driven design, and bento grid layouts.
+A deployment-ready single-page portfolio for an Artificial Intelligence undergraduate and emerging Machine Learning Engineer.
 
-## 🚀 Deploy to GitHub Pages
+## Highlights
 
-1. Create repo: `Dinusha-Ekanayake.github.io` (Public)
-2. Upload these files:
-   ```
-   index.html
-   assets/
-     cv.pdf          ← your resume
-     profile.jpg     ← your photo
-   ```
-3. Settings → Pages → Source: `main` branch → `/ (root)` → Save
-4. Live at: `https://Dinusha-Ekanayake.github.io`
+- CV-led information architecture for recruiters and internship applications
+- Responsive navigation, personal hero, About + CV, skills, education, projects, achievements, certifications, volunteering, and contact sections
+- Live canvas neural-network background that responds to pointer movement and viewport size
+- Project filtering and tabbed achievements/certification content
+- Interactive portrait, spotlight cards, scroll reveals, progress indicator, active navigation, and rotating AI focus text
+- Exact skills and project content from the latest ATS-friendly CV
+- Keyboard-friendly navigation and reduced-motion support
+- Open Graph, Twitter Card, canonical URL, favicon, and Person structured data
+- No build step or runtime framework required
 
-## 🔐 Admin Dashboard
+## Local preview
 
-**Open:** Press `Ctrl + Shift + A` on your site  
-**Password:** `dinusha2024` (change it in `index.html` — search for `const PW=`)
+Open `index.html` directly, or run a static server from this directory:
 
-**Manage:** Projects, Experience, Certifications, Photo Albums, Articles, CV link
+```powershell
+npx serve .
+```
 
-Data saves to your browser's localStorage.
+## GitHub Pages deployment
 
-## 🎨 Design Details
+1. Push the repository to `Dinusha-Ekanayake/Dinusha-Ekanayake.github.io`.
+2. Open **Settings → Pages**.
+3. Select **Deploy from a branch**.
+4. Choose the `main` branch and `/ (root)` folder.
+5. The site will be available at `https://dinusha-ekanayake.github.io/`.
 
-- **Theme:** Dark-first cinematic with warm amber (#D4A853), teal (#2EC4B6), coral (#E85D75)
-- **Fonts:** Syne (display) + Plus Jakarta Sans (body) + Fira Code (mono)
-- **Hero:** Animated constellation canvas with connected particle nodes
-- **Identity Cards:** 4 cards for Code / Capture / Explore / Lead
-- **Skills:** Bento grid with colored glow effects
-- **Photography:** Masonry gallery with hover overlays
-- **Travel:** Topographic SVG + stats grid
-- **Scroll progress bar** at the top
-- **Dark/Light toggle** with saved preference
+## Structure
 
-## ✏️ Customise
+```text
+index.html
+styles.css
+script.js
+assets/
+  ai-neural-hero.png
+  profile.jpg
+  Dinusha-Ekanayake-CV.pdf
+```
 
-| What | Where |
-|------|-------|
-| Name/bio | Search `Dinusha Ekanayake` in HTML |
-| Accent colors | CSS `:root` variables at the top |
-| Admin password | `const PW='dinusha2024'` in JS |
-| Email | Search `dinushabawantha2003@gmail.com` |
-| Social links | Contact section in HTML |
-
-## 📸 Photo Albums
-
-Upload images anywhere (Imgur, Cloudinary, GitHub repo), then use the dashboard to add album cover URLs.
+The site is plain HTML, CSS, and JavaScript, making it directly deployable to GitHub Pages without a build pipeline.
