@@ -192,20 +192,23 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 @keyframes aiScan{to{background-position:center,220% 0}}
 
 /* ===== IDENTITY CARDS ===== */
-.id-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-top:3rem}
-.id-card{position:relative;overflow:hidden;border-radius:var(--r);padding:2.2rem 1.8rem;min-height:280px;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid var(--bdr);cursor:default;transition:transform .4s var(--ease),box-shadow .4s var(--ease)}
-.id-card:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
-.id-card::before{content:'';position:absolute;inset:0;opacity:.15;transition:opacity .4s;z-index:0}
-.id-card:hover::before{opacity:.25}
+.id-grid{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-top:3.2rem}
+.pipeline-flow{position:absolute;z-index:0;left:8%;right:8%;top:50%;height:1px;transform:translateY(-50%);background:linear-gradient(90deg,transparent,var(--teal),var(--coral),var(--gold),var(--tx2),transparent);opacity:.34;overflow:visible}
+.pipeline-flow::before{content:'';position:absolute;inset:-5px 0;background:inherit;filter:blur(7px);opacity:.45}
+.flow-pulse{position:absolute;top:-3px;left:0;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 14px var(--gold),0 0 28px var(--teal);animation:pipelineSignal 5.4s linear infinite}.flow-pulse:nth-child(2){animation-delay:-1.8s;background:var(--teal)}.flow-pulse:nth-child(3){animation-delay:-3.6s;background:var(--coral)}
+.id-card{--stage:var(--teal);--stageA:var(--tealA);position:relative;z-index:1;overflow:hidden;border-radius:20px;padding:1.35rem 1.45rem 1.55rem;min-height:365px;display:flex;flex-direction:column;border:1px solid var(--bdr);cursor:default;background:linear-gradient(155deg,var(--surf) 15%,var(--bg2));transform:perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));transform-style:preserve-3d;transition:transform .35s var(--ease),box-shadow .4s var(--ease),border-color .35s}
+.id-card:hover{--stage:var(--teal);--stageA:rgba(46,196,182,.2);transform:perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-9px) scale(1.012);border-color:rgba(46,196,182,.72);box-shadow:inset 0 0 80px rgba(46,196,182,.11),0 28px 75px rgba(0,0,0,.35),0 0 46px rgba(46,196,182,.16)}
+.id-card::before{content:'';position:absolute;inset:0;z-index:0;background:radial-gradient(260px circle at var(--spot-x,50%) var(--spot-y,8%),var(--stageA),transparent 72%);opacity:.72;transition:opacity .3s}
+.id-card::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000,transparent 60%);opacity:.55}
 .id-card>*{position:relative;z-index:1}
-.id-icon{font-size:2.5rem;margin-bottom:auto}
-.id-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
-.id-desc{font-size:.85rem;color:var(--tx2);line-height:1.6}
-.id-accent{position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;filter:blur(50px);z-index:0}
-.id-code{background:linear-gradient(180deg,var(--surf) 30%,var(--tealB))}.id-code::before{background:linear-gradient(135deg,rgba(46,196,182,.2),transparent)}.id-code .id-accent{background:var(--teal)}.id-code .id-title{color:var(--teal)}
-.id-photo{background:linear-gradient(180deg,var(--surf) 30%,var(--coralB))}.id-photo::before{background:linear-gradient(135deg,rgba(232,93,117,.2),transparent)}.id-photo .id-accent{background:var(--coral)}.id-photo .id-title{color:var(--coral)}
-.id-explore{background:linear-gradient(180deg,var(--surf) 30%,var(--goldB))}.id-explore::before{background:linear-gradient(135deg,rgba(212,168,83,.2),transparent)}.id-explore .id-accent{background:var(--gold)}.id-explore .id-title{color:var(--gold)}
-.id-lead{background:linear-gradient(180deg,var(--surf) 30%,rgba(240,236,226,.03))}.id-lead::before{background:linear-gradient(135deg,rgba(240,236,226,.1),transparent)}.id-lead .id-accent{background:var(--tx)}.id-lead .id-title{color:var(--tx)}
+.id-card-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem}.id-step{font:500 .72rem 'Fira Code',monospace;letter-spacing:.14em;color:var(--stage)}.id-phase{font:500 .58rem 'Fira Code',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--tx3);padding:.3rem .55rem;border:1px solid var(--bdr);border-radius:999px;background:rgba(0,0,0,.12)}
+.id-visual{height:142px;display:grid;place-items:center;color:var(--stage);position:relative;margin:.25rem 0 .55rem;transform:translateZ(22px);transition:color .35s var(--ease)}
+.id-visual::before,.id-visual::after{content:'';position:absolute;border-radius:50%;border:1px solid color-mix(in srgb,var(--stage) 22%,transparent);animation:stageOrbit 7s linear infinite}.id-visual::before{width:112px;height:112px}.id-visual::after{width:76px;height:76px;border-style:dashed;animation-direction:reverse;animation-duration:5s}
+.id-visual svg{width:112px;height:112px;overflow:visible;filter:drop-shadow(0 0 12px var(--stageA))}.stage-path{fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:7 7;animation:stagePath 9s linear infinite}.stage-shape{fill:var(--bg2);stroke:currentColor;stroke-width:1.5}.stage-node{fill:var(--stage);transform-box:fill-box;transform-origin:center;animation:stageNode 2.4s ease-in-out infinite}.stage-node.n2{animation-delay:-.8s}.stage-node.n3{animation-delay:-1.6s}.stage-soft{fill:var(--stageA);stroke:currentColor;stroke-width:1}
+.id-content{margin-top:auto;transform:translateZ(14px)}.id-kicker{font:500 .62rem 'Fira Code',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:.38rem}.id-title{font-family:'Syne',sans-serif;font-size:1.45rem;font-weight:700;color:var(--stage);margin-bottom:.55rem;transition:color .35s var(--ease)}.id-desc{font-size:.82rem;color:var(--tx2);line-height:1.65}.id-result{display:flex;align-items:center;gap:.5rem;margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--bdr);font:500 .64rem 'Fira Code',monospace;letter-spacing:.05em;color:var(--tx3)}.id-result::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--stage);box-shadow:0 0 10px var(--stage);animation:pulse 1.8s ease-in-out infinite;transition:background .35s,box-shadow .35s}
+.id-accent{position:absolute;top:-80px;right:-70px;width:190px;height:190px;border-radius:50%;filter:blur(75px);z-index:0;background:var(--stage);opacity:.12;transition:opacity .4s,transform .5s}.id-card:hover .id-accent{opacity:.25;transform:scale(1.18)}
+.id-code{--stage:var(--teal);--stageA:var(--tealA)}.id-photo{--stage:var(--coral);--stageA:var(--coralA)}.id-explore{--stage:var(--gold);--stageA:var(--goldA)}.id-lead{--stage:var(--tx);--stageA:rgba(240,236,226,.08)}
+@keyframes pipelineSignal{from{left:0;opacity:0}8%,92%{opacity:1}to{left:100%;opacity:0}}@keyframes stagePath{to{stroke-dashoffset:-140}}@keyframes stageNode{0%,100%{transform:scale(.82);opacity:.5}50%{transform:scale(1.25);opacity:1}}@keyframes stageOrbit{to{transform:rotate(360deg)}}
 
 /* ===== ABOUT ===== */
 .about-grid{display:grid;grid-template-columns:.9fr 1.3fr;gap:clamp(3rem,7vw,7rem);align-items:center}
@@ -403,9 +406,11 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
 /* ===== RESPONSIVE ===== */
-@media(max-width:1024px){.id-grid{grid-template-columns:repeat(2,1fr)}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 6}.award-grid{grid-template-columns:1fr 1fr}.proj-card.featured{grid-column:auto}}
+@media(max-width:1200px){.n-links{gap:1.35rem}.n-links a{font-size:.74rem}}
+@media(max-width:980px){.n-links{display:none}.burger{display:flex}}
+@media(max-width:1024px){.id-grid{grid-template-columns:repeat(2,1fr)}.pipeline-flow{display:none}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 6}.award-grid{grid-template-columns:1fr 1fr}.proj-card.featured{grid-column:auto}}
 @media(max-width:900px){#hero{padding-bottom:9rem}.hero-inner{grid-template-columns:1fr;gap:1rem;padding-top:3rem}.hero-right{display:flex;margin:0 auto}.hero-photo-wrap{width:min(78vw,410px)}.about-grid{grid-template-columns:1fr}.about-img-wrap{max-width:400px}.contact-grid{grid-template-columns:1fr}.row2{grid-template-columns:1fr}}
-@media(max-width:768px){.n-links{display:none}.burger{display:flex}.id-grid{grid-template-columns:1fr}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 12}.about-stats{grid-template-columns:repeat(3,1fr)}.hero-stats-inner{gap:2rem;flex-wrap:wrap}.edu-grid,.award-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.n-links{display:none}.burger{display:flex}.id-grid{grid-template-columns:1fr}.id-card{min-height:340px}.bento .b-span6,.bento .b-span4,.bento .b-span3,.bento .b-span8{grid-column:span 12}.about-stats{grid-template-columns:repeat(3,1fr)}.hero-stats-inner{gap:2rem;flex-wrap:wrap}.edu-grid,.award-grid{grid-template-columns:1fr}}
 @media(max-width:500px){.about-stats{grid-template-columns:1fr 1fr}footer .ft-top{flex-direction:column}.ft-links{flex-wrap:wrap;gap:1.5rem}.hero-stats-inner{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.hs{display:block}.hero-sub{align-items:flex-start;flex-direction:column;gap:.2rem}.proj-grid{grid-template-columns:1fr}.hero-photo-wrap{width:min(84vw,350px)}.logo-chip{width:43px;height:43px;padding:8px}.orbit-inner .logo-chip{width:38px;height:38px;padding:7px}.logo-upright{left:-22px;top:-22px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.cursor-star{display:none!important}.parallax-el,.rv{transform:none!important}.rv,.hero-tag,.hero-h1,.hero-sub,.hero-pills,.hero-ctas,.availability,.hero-right,.hero-stats-inner,.hero-scroll{opacity:1!important}.preloader{display:none!important}}
 </style>
@@ -422,7 +427,7 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
 <nav>
   <a class="n-logo" href="#hero" aria-label="Dinusha Ekanayake — Home"><span>DE</span></a>
   <ul class="n-links">
-    <li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li>
+    <li><a href="#hero">Home</a></li><li><a href="#identity">Approach</a></li><li><a href="#about">About</a></li><li><a href="#skills">Skills</a></li>
     <li><a href="#education">Education</a></li><li><a href="#projects">Projects</a></li>
     <li><a href="#achievements">Recognition</a></li><li><a href="#experience">Leadership</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -432,7 +437,7 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
     <button type="button" class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobM"><span></span><span></span><span></span></button>
   </div>
 </nav>
-<div class="mob-m" id="mobM"><a href="#about">About</a><a href="#skills">Skills</a><a href="#education">Education</a><a href="#projects">Projects</a><a href="#achievements">Recognition</a><a href="#experience">Leadership</a><a href="#contact">Contact</a></div>
+<div class="mob-m" id="mobM"><a href="#hero">Home</a><a href="#identity">Approach</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#education">Education</a><a href="#projects">Projects</a><a href="#achievements">Recognition</a><a href="#experience">Leadership</a><a href="#contact">Contact</a></div>
 
 <!-- HERO -->
 <main id="main-content"><section id="hero">
@@ -489,10 +494,27 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
   <div class="label label-gold rv">How I Build</div>
   <h2 class="rv rd1 parallax-el">From Raw Data<br>to Real-World Intelligence.</h2>
   <div class="id-grid">
-    <div class="id-card id-code rv rd1 glow-card"><div class="id-accent"></div><span class="id-icon mono">01</span><div class="id-title">Model</div><div class="id-desc">Train predictive and deep-learning models, explain their decisions with SHAP, and evaluate them against real operational needs.</div></div>
-    <div class="id-card id-photo rv rd2 glow-card"><div class="id-accent"></div><span class="id-icon mono">02</span><div class="id-title">Reason</div><div class="id-desc">Engineer RAG pipelines, tool-using agents, and multi-agent workflows that research, verify, summarize, and act with context.</div></div>
-    <div class="id-card id-explore rv rd3 glow-card"><div class="id-accent"></div><span class="id-icon mono">03</span><div class="id-title">Deploy</div><div class="id-desc">Connect Python intelligence to reliable APIs, modern interfaces, cloud databases, and production-ready full-stack applications.</div></div>
-    <div class="id-card id-lead rv rd4 glow-card"><div class="id-accent"></div><span class="id-icon mono">04</span><div class="id-title">Lead</div><div class="id-desc">Bring structured communication, project ownership, and collaborative leadership to university technology and volunteering teams.</div></div>
+    <div class="pipeline-flow rv" aria-hidden="true"><span class="flow-pulse"></span><span class="flow-pulse"></span><span class="flow-pulse"></span></div>
+    <article class="id-card id-code rv rd1">
+      <div class="id-accent"></div><div class="id-card-head"><span class="id-step">01</span><span class="id-phase">Learn</span></div>
+      <div class="id-visual" aria-hidden="true"><svg viewBox="0 0 120 120"><path class="stage-path" d="M22 30 54 44m-32 16 32-6M22 90l32-26m12-20 30-15M66 54l30 6M66 64l30 27"/><circle class="stage-node" cx="22" cy="30" r="5"/><circle class="stage-node n2" cx="22" cy="60" r="5"/><circle class="stage-node n3" cx="22" cy="90" r="5"/><circle class="stage-soft" cx="60" cy="54" r="12"/><circle class="stage-soft" cx="60" cy="72" r="9"/><circle class="stage-node n2" cx="98" cy="29" r="5"/><circle class="stage-node" cx="98" cy="60" r="5"/><circle class="stage-node n3" cx="98" cy="91" r="5"/></svg></div>
+      <div class="id-content"><div class="id-kicker">AI model development</div><h3 class="id-title">Model</h3><p class="id-desc">Design, train, evaluate, and explain AI models across machine learning, deep learning, NLP, time series, and other problem domains—choosing the right approach for each real-world need.</p><div class="id-result">Reliable, explainable AI</div></div>
+    </article>
+    <article class="id-card id-photo rv rd2">
+      <div class="id-accent"></div><div class="id-card-head"><span class="id-step">02</span><span class="id-phase">Reason</span></div>
+      <div class="id-visual" aria-hidden="true"><svg viewBox="0 0 120 120"><path class="stage-path" d="M60 60 27 28m33 32 34-32M60 60 24 91m36-31 36 31"/><path class="stage-shape" d="m60 42 15 9v18l-15 9-15-9V51Z"/><path class="stage-path" d="M54 56h12m-12 8h8"/><circle class="stage-node" cx="27" cy="28" r="6"/><circle class="stage-node n2" cx="94" cy="28" r="6"/><circle class="stage-node n3" cx="24" cy="91" r="6"/><circle class="stage-node n2" cx="96" cy="91" r="6"/></svg></div>
+      <div class="id-content"><div class="id-kicker">Agentic intelligence</div><h3 class="id-title">Reason</h3><p class="id-desc">Engineer RAG pipelines, tool-using agents, and multi-agent workflows that research, verify, summarize, and act with context.</p><div class="id-result">Grounded decisions</div></div>
+    </article>
+    <article class="id-card id-explore rv rd3">
+      <div class="id-accent"></div><div class="id-card-head"><span class="id-step">03</span><span class="id-phase">Serve</span></div>
+      <div class="id-visual" aria-hidden="true"><svg viewBox="0 0 120 120"><path class="stage-shape" d="M31 70c-9 0-15-6-15-14s6-14 14-14c3-12 13-20 26-20 14 0 25 9 27 22 11 0 20 8 20 18s-8 18-19 18H32"/><path class="stage-path" d="M60 42v49m0 0-14-14m14 14 14-14"/><rect class="stage-soft" x="34" y="94" width="52" height="10" rx="5"/><circle class="stage-node" cx="28" cy="56" r="4"/><circle class="stage-node n2" cx="86" cy="59" r="4"/></svg></div>
+      <div class="id-content"><div class="id-kicker">Product engineering</div><h3 class="id-title">Deploy</h3><p class="id-desc">Connect Python intelligence to reliable APIs, modern interfaces, cloud databases, and production-ready full-stack applications.</p><div class="id-result">Production delivery</div></div>
+    </article>
+    <article class="id-card id-lead rv rd4">
+      <div class="id-accent"></div><div class="id-card-head"><span class="id-step">04</span><span class="id-phase">Align</span></div>
+      <div class="id-visual" aria-hidden="true"><svg viewBox="0 0 120 120"><path class="stage-path" d="M60 52 28 34m32 18 32-18M60 52 30 88m30-36 30 36"/><circle class="stage-shape" cx="60" cy="48" r="15"/><path class="stage-shape" d="M43 82c3-12 9-18 17-18s14 6 17 18"/><circle class="stage-soft" cx="28" cy="30" r="11"/><circle class="stage-soft" cx="92" cy="30" r="11"/><circle class="stage-soft" cx="28" cy="91" r="11"/><circle class="stage-soft" cx="92" cy="91" r="11"/><circle class="stage-node" cx="60" cy="48" r="4"/></svg></div>
+      <div class="id-content"><div class="id-kicker">Technical leadership</div><h3 class="id-title">Lead</h3><p class="id-desc">Bring structured communication, project ownership, and collaborative leadership to university technology and volunteering teams.</p><div class="id-result">Aligned execution</div></div>
+    </article>
   </div>
 </section></div>
 
@@ -509,12 +531,6 @@ footer{border-top:1px solid var(--bdr);padding:4rem clamp(1.5rem,5vw,5rem) 3rem;
       <p class="rv rd2">I’m a second-year B.Sc. (Hons.) Artificial Intelligence undergraduate at the University of Moratuwa, focused on machine learning, deep learning, applied AI, and intelligent software systems.</p>
       <p class="rv rd2">My work sits where models meet products: predictive maintenance, explainable ML, fine-tuned transformers, retrieval-augmented generation, autonomous agents, and full-stack applications that make those capabilities useful.</p>
       <p class="rv rd2">I also lead creative teams and volunteer as a web developer. That mix of engineering, visual thinking, and communication helps me turn complex ideas into experiences people can understand and trust.</p>
-      <div class="about-stats">
-        <div class="stat rv rd1"><div class="st-n">3.57</div><div class="st-l">CGPA / 4.00</div></div>
-        <div class="stat rv rd2"><div class="st-n">2nd</div><div class="st-l">District Rank</div></div>
-        <div class="stat rv rd3"><div class="st-n">5+</div><div class="st-l">Applied AI Systems</div></div>
-      </div>
-      <div class="about-chips rv rd3"><span class="about-chip">English · Fluent</span><span class="about-chip">Sinhala · Native</span><span class="about-chip">Moratuwa, Sri Lanka</span></div>
     </div>
   </div>
 </section></div>
@@ -806,7 +822,7 @@ document.addEventListener('mouseenter',()=>dot.classList.add('vis'));
 
 // SCROLL + BACK TO TOP + NAV SHRINK + SCROLL SPY
 const sp=document.getElementById('scrollProg'),btt=document.getElementById('btt'),nv=document.querySelector('nav');
-const spySections=['about','skills','education','projects','achievements','experience','contact'];
+const spySections=['hero','identity','about','skills','education','projects','achievements','experience','contact'];
 const navLinks=document.querySelectorAll('.n-links a');
 window.addEventListener('scroll',()=>{
   const p=scrollY/(document.body.scrollHeight-innerHeight);
@@ -994,6 +1010,14 @@ if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
       raf=requestAnimationFrame(()=>{const r=section.getBoundingClientRect();section.style.setProperty('--ai-x',`${((event.clientX-r.left)/r.width)*100}%`);section.style.setProperty('--ai-y',`${((event.clientY-r.top)/r.height)*100}%`);raf=0});
     },{passive:true});
     section.addEventListener('pointerleave',()=>{section.style.removeProperty('--ai-x');section.style.removeProperty('--ai-y')},{passive:true});
+  });
+}
+
+// INTERACTIVE PIPELINE CARD DEPTH
+if(matchMedia('(hover: hover) and (pointer: fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.id-card').forEach(card=>{
+    card.addEventListener('pointermove',event=>{const r=card.getBoundingClientRect(),x=(event.clientX-r.left)/r.width,y=(event.clientY-r.top)/r.height;card.style.setProperty('--spot-x',`${x*100}%`);card.style.setProperty('--spot-y',`${y*100}%`);card.style.setProperty('--tilt-x',`${(.5-y)*6}deg`);card.style.setProperty('--tilt-y',`${(x-.5)*7}deg`)},{passive:true});
+    card.addEventListener('pointerleave',()=>{card.style.removeProperty('--spot-x');card.style.removeProperty('--spot-y');card.style.setProperty('--tilt-x','0deg');card.style.setProperty('--tilt-y','0deg')},{passive:true});
   });
 }
 
