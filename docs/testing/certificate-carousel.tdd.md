@@ -14,6 +14,8 @@ As a portfolio visitor, I can browse every certificate in a discrete, automatica
 | ArrowRight keyboard navigation advances the carousel | `tests/browser/certificate-carousel.e2e.cjs` | Browser E2E | PASS | Verified at 1440px, 768px, and 375px |
 | The page does not gain horizontal overflow | `tests/browser/certificate-carousel.e2e.cjs` | Responsive E2E | PASS | Verified at all three breakpoints |
 | Autoplay advances one card after a fixed interval, can be paused, and loops at the end | `tests/browser/certificate-carousel.e2e.cjs` | Timed browser E2E | PASS | RED: autoplay control missing; GREEN: movement after 4 seconds, stable while paused, final position wraps to zero |
+| Reduced-motion preference disables autoplay by default | `tests/browser/certificate-carousel.e2e.cjs` | Accessibility E2E | PASS | Emulated `prefers-reduced-motion: reduce`; Pause state is active on load |
+| The DataXplore certificate exposes the LinkedIn post and both competition repositories exactly once | `tests/browser/certificate-carousel.e2e.cjs` | Content E2E | PASS | RED: resource links missing; GREEN: three unique expected URLs at 1440px, 768px, and 375px |
 
 ## Validation
 

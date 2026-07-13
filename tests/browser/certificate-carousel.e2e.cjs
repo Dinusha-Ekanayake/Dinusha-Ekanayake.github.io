@@ -79,6 +79,7 @@ async function main() {
       const cards=[...document.querySelectorAll('#certsList .cert-card')];
       const prev=document.getElementById('certPrev'),next=document.getElementById('certNext');
       const autoplay=document.getElementById('certAutoplayToggle');
+      const dataXploreCard=cards.find(card=>card.querySelector('.cert-name')?.textContent.includes('DataXplore'));
       return {
         hasViewport:!!viewport,hasPrev:!!prev,hasNext:!!next,hasAutoplay:!!autoplay,total:cards.length,
         horizontal:viewport?viewport.scrollWidth>viewport.clientWidth:false,
@@ -86,6 +87,7 @@ async function main() {
         visible:viewport?cards.filter(card=>card.offsetLeft<viewport.scrollLeft+viewport.clientWidth-2&&card.offsetLeft+card.offsetWidth>viewport.scrollLeft+2).length:0,
         overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,
         before:viewport?viewport.scrollLeft:0,count:document.getElementById('certResultCount').textContent.trim(),
+        dataXploreLinks:dataXploreCard?[...dataXploreCard.querySelectorAll('.cert-resource-link')].map(link=>link.href):[],
         metrics:viewport?((({step,perView,index,maxIndex,count})=>({step,perView,index,maxIndex,count}))(certCarouselMetrics())):null
       };
     })()`);
@@ -94,6 +96,12 @@ async function main() {
     assert(initial.horizontal && initial.oneRow, `${label}: certificates are not a one-row horizontal track`);
     assert(initial.visible === expectedVisible, `${label}: expected ${expectedVisible} visible card(s), got ${initial.visible}`);
     assert(!initial.overflow, `${label}: page has horizontal overflow`);
+    const expectedDataXploreLinks=[
+      'https://www.linkedin.com/posts/dinusha-ekanayake-0a0963266_dataxplore2-datascience-machinelearning-ugcPost-7469704053065777152-6B4L/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEFIBrgBN44I5NTNbC_rxLbTJbVQzQQkAXY',
+      'https://github.com/Dinusha-Ekanayake/Bayesian_Minds-DataXplore_2-0_Stage_03',
+      'https://github.com/Dinusha-Ekanayake/Stroke_Risk_Prediction-DataXplore_2.0-Competition-Stage_01'
+    ];
+    assert(initial.dataXploreLinks.length===3&&new Set(initial.dataXploreLinks).size===3&&expectedDataXploreLinks.every(url=>initial.dataXploreLinks.includes(url)), `${label}: DataXplore certificate resources are missing or duplicated`);
 
     await evaluate('scrollCerts(1); true');
     await wait(750);
@@ -141,9 +149,19 @@ async function main() {
     results[label] = { initial, afterNext, filtered, keyboardLeft, autoplay };
   }
 
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  await send('Page.reload', { ignoreCache: true });
+  await wait(1200);
+  const reducedMotion = await evaluate(`({
+    preference:certReducedMotion,
+    paused:certAutoplayPaused,
+    pressed:document.getElementById('certAutoplayToggle').getAttribute('aria-pressed')
+  })`);
+  assert(reducedMotion.preference && reducedMotion.paused && reducedMotion.pressed==='true', 'reduced-motion preference did not disable autoplay by default');
+
   assert(runtimeErrors.length === 0, `runtime errors: ${runtimeErrors.join('; ')}`);
   assert(consoleErrors.length === 0, `console errors: ${consoleErrors.join('; ')}`);
-  console.log(JSON.stringify({ pass: true, results, runtimeErrors, consoleErrors, screenshots: shotDir }, null, 2));
+  console.log(JSON.stringify({ pass: true, results, reducedMotion, runtimeErrors, consoleErrors, screenshots: shotDir }, null, 2));
   ws.close();
 }
 
