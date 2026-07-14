@@ -25,8 +25,10 @@ async function waitForCDP() {
 }
 
 async function main() {
-  const asset = path.resolve('assets/achievements/dataxplore-finalist.jpg');
-  assert(fs.existsSync(asset) && fs.statSync(asset).size > 40_000, 'DataXplore background asset is missing or unexpectedly small');
+  const dataAsset = path.resolve('assets/achievements/dataxplore-finalist.jpg');
+  const academicAsset = path.resolve('assets/achievements/best-al-results.jpg');
+  assert(fs.existsSync(dataAsset) && fs.statSync(dataAsset).size > 40_000, 'DataXplore background asset is missing or unexpectedly small');
+  assert(fs.existsSync(academicAsset) && fs.statSync(academicAsset).size > 100_000, 'G.C.E. A/L award background asset is missing or unexpectedly small');
   await waitForCDP();
   const target = await json(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(pageUrl)}`, { method: 'PUT' });
   ws = new WebSocket(target.webSocketDebuggerUrl);
@@ -71,27 +73,35 @@ async function main() {
       const dataCard=cards.find(card=>card.querySelector('.award-title')?.textContent.includes('DataXplore'));
       const academicCard=cards.find(card=>card.querySelector('.award-title')?.textContent.includes('G.C.E. A/L'));
       const image=dataCard?.querySelector('.award-bg');
+      const academicImage=academicCard?.querySelector('.award-bg');
       const cardStyle=dataCard?getComputedStyle(dataCard):null;
       const title=dataCard?.querySelector('.award-title');
       const titleStyle=title?getComputedStyle(title):null;
+      const academicStyle=academicCard?getComputedStyle(academicCard):null;
+      const academicTitle=academicCard?.querySelector('.award-title');
+      const academicTitleStyle=academicTitle?getComputedStyle(academicTitle):null;
       const index=dataCard?.querySelector('.award-index');
+      const academicIndex=academicCard?.querySelector('.award-index');
       return {
         cardCount:cards.length,photoClass:dataCard?.classList.contains('award-card-photo')||false,
         image:{count:dataCard?.querySelectorAll('.award-bg').length||0,src:image?.getAttribute('src')||'',alt:image?.getAttribute('alt')??null,hidden:image?.getAttribute('aria-hidden')||'',loaded:!!image&&image.complete&&image.naturalWidth>0,fit:image?getComputedStyle(image).objectFit:''},
-        academicImageCount:academicCard?.querySelectorAll('.award-bg').length||0,
+        academicPhotoClass:academicCard?.classList.contains('award-card-photo')||false,
+        academicImage:{count:academicCard?.querySelectorAll('.award-bg').length||0,src:academicImage?.getAttribute('src')||'',alt:academicImage?.getAttribute('alt')??null,hidden:academicImage?.getAttribute('aria-hidden')||'',loaded:!!academicImage&&academicImage.complete&&academicImage.naturalWidth>0,fit:academicImage?getComputedStyle(academicImage).objectFit:'',position:academicImage?getComputedStyle(academicImage).objectPosition:''},
         overlay:cardStyle?.getPropertyValue('--award-photo-overlay').trim()||'',indexPosition:index?getComputedStyle(index).position:'',
-        titleColor:titleStyle?.color||'',overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth
+        academicOverlay:academicStyle?.getPropertyValue('--award-photo-overlay').trim()||'',academicIndexPosition:academicIndex?getComputedStyle(academicIndex).position:'',
+        titleColor:titleStyle?.color||'',academicTitleColor:academicTitleStyle?.color||'',overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth
       };
     })()`);
     assert(state.cardCount===2&&state.photoClass, `${label}: DataXplore card is not configured as the photo achievement`);
     assert(state.image.count===1&&state.image.src==='assets/achievements/dataxplore-finalist.jpg'&&state.image.alt===''&&state.image.hidden==='true'&&state.image.loaded&&state.image.fit==='cover', `${label}: DataXplore background image is missing, inaccessible, or incorrectly fitted`);
-    assert(state.academicImageCount===0, `${label}: G.C.E. A/L card must remain unchanged until its image is supplied`);
-    assert(state.overlay&&state.titleColor==='rgb(255, 255, 255)', `${label}: DataXplore photo lacks a readable text overlay`);
-    assert(state.indexPosition==='absolute', `${label}: DataXplore card index is not anchored to the top-right corner`);
+    assert(state.academicPhotoClass, `${label}: G.C.E. A/L card is not configured as a photo achievement`);
+    assert(state.academicImage.count===1&&state.academicImage.src==='assets/achievements/best-al-results.jpg'&&state.academicImage.alt===''&&state.academicImage.hidden==='true'&&state.academicImage.loaded&&state.academicImage.fit==='cover', `${label}: G.C.E. A/L background image is missing, inaccessible, or incorrectly fitted`);
+    assert(state.overlay&&state.academicOverlay&&state.titleColor==='rgb(255, 255, 255)'&&state.academicTitleColor==='rgb(255, 255, 255)', `${label}: an achievement photo lacks a readable text overlay`);
+    assert(state.indexPosition==='absolute'&&state.academicIndexPosition==='absolute', `${label}: an achievement card index is not anchored to the top-right corner`);
     assert(!state.overflow, `${label}: achievement image introduces horizontal overflow`);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     fs.writeFileSync(path.join(shots, `${label}.png`), Buffer.from(shot.data, 'base64'));
-    summaries[label] = { photoLoaded: state.image.loaded, academicUnchanged: state.academicImageCount === 0, overflow: state.overflow };
+    summaries[label] = { dataPhotoLoaded: state.image.loaded, academicPhotoLoaded: state.academicImage.loaded, academicCrop: state.academicImage.position, overflow: state.overflow };
   }
   assert(runtimeErrors.length === 0, `runtime errors: ${runtimeErrors.join('; ')}`);
   console.log(JSON.stringify({ pass: true, summaries, screenshots: shots }));
