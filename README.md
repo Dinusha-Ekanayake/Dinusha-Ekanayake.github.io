@@ -1,4 +1,4 @@
-# Dinusha Ekanayake — AI/ML Portfolio
+# Dinusha Ekanayake — My Portfolio
 
 [![Live Portfolio](https://img.shields.io/badge/Live_Portfolio-Visit-D4A853?style=for-the-badge&logo=githubpages&logoColor=white)](https://dinusha-ekanayake.github.io)
 [![GitHub](https://img.shields.io/badge/GitHub-Dinusha--Ekanayake-181717?style=for-the-badge&logo=github)](https://github.com/Dinusha-Ekanayake)
