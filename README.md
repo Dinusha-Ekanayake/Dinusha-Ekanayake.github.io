@@ -17,7 +17,7 @@ The site is built with semantic HTML, modern CSS, and vanilla JavaScript. It has
 - Pointer-responsive 3D technology sphere orbiting around the profile image
 - Animated neural-network canvas and responsive ambient section backgrounds
 - AI workflow presentation covering model development, agentic reasoning, deployment, and leadership
-- Technical skills console with an animated technology marquee and categorized skill cards
+- Technical skills console with an animated technology marquee, icon-labelled tools, and categorized skill cards
 - Filterable, circular project carousel with timed movement, center emphasis, navigation controls, and project detail modals
 - Dynamic certification and leadership timelines
 - Dark and light themes with browser-persisted preference
@@ -35,7 +35,7 @@ The site is built with semantic HTML, modern CSS, and vanilla JavaScript. It has
 | About | AI undergraduate profile and engineering interests |
 | Skills | Machine learning, deep learning, LLMs, agents, software engineering, data, cloud, and product skills |
 | Education | University of Moratuwa and G.C.E. Advanced Level background |
-| Projects | PredictiX, Multi-Agent Research Assistant, CV Mate, ReClaim, and SmartFlow |
+| Projects | Ten systems spanning predictive ML, agentic AI, full-stack products, frontend engineering, embedded sensing, symbolic AI, computer graphics, and this portfolio |
 | Recognition | Competition and academic achievements |
 | Certifications | Machine learning, cybersecurity, programming, web development, and data science learning |
 | Leadership | University volunteering, web development, photography, and videography leadership |
