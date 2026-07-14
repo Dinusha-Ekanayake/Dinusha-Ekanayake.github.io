@@ -12,6 +12,7 @@ const browser = spawn(edge, [
   '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
   `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, 'about:blank'
 ], { stdio: 'ignore', windowsHide: true });
+let ws;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const assert = (condition, message) => { if (!condition) throw new Error(`ASSERTION: ${message}`); };
@@ -26,7 +27,7 @@ async function waitForCDP() {
 async function main() {
   await waitForCDP();
   const target = await json(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(pageUrl)}`, { method: 'PUT' });
-  const ws = new WebSocket(target.webSocketDebuggerUrl);
+  ws = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
   let sequence = 0;
   const pending = new Map();
@@ -98,9 +99,9 @@ async function main() {
   assert(cachedFallback.commit==='1,234+'&&cachedFallback.repos==='42', 'cached GitHub stats should survive an offline refresh');
 
   const summaries = {};
-  for (const [label, width, height] of [['desktop', 1440, 900], ['tablet', 768, 900], ['mobile', 375, 812]]) {
+  for (const [label, width, height, theme] of [['wide-short', 1644, 758, 'dark'], ['desktop', 1440, 900, 'dark'], ['tablet', 768, 900, 'light'], ['mobile', 375, 812, 'light']]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 600 });
-    await evaluate("window.dispatchEvent(new Event('resize')); true");
+    await evaluate(`document.documentElement.dataset.theme=${JSON.stringify(theme)}; window.dispatchEvent(new Event('resize')); true`);
     await wait(400);
     const state = await evaluate(`(()=>{
       const rect=element=>{const r=element.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,cx:r.left+r.width/2,cy:r.top+r.height/2}};
@@ -131,12 +132,44 @@ async function main() {
     fs.writeFileSync(path.join(shots,`${label}.png`),Buffer.from(shot.data,'base64'));
   }
 
+  await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+  const snapContract=await evaluate(`(()=>{
+    const targets=[document.getElementById('hero'),...document.querySelectorAll('.post-hero-shell>.sw'),document.querySelector('.site-footer')].filter(Boolean);
+    const root=getComputedStyle(document.documentElement);
+    return {type:root.scrollSnapType,padding:root.scrollPaddingTop,count:targets.length,targets:targets.map(target=>({align:getComputedStyle(target).scrollSnapAlign,stop:getComputedStyle(target).scrollSnapStop}))};
+  })()`);
+  assert(snapContract.type==='y mandatory', `section snap type should be y mandatory, received ${snapContract.type}`);
+  assert(parseFloat(snapContract.padding)>=56, `section snap padding should clear the fixed navigation, received ${snapContract.padding}`);
+  assert(snapContract.count===10&&snapContract.targets.every(target=>target.align==='start'&&target.stop==='always'), 'hero, section wrappers, and footer must all be mandatory snap targets');
+
+  await evaluate(`(()=>{document.documentElement.dataset.theme='dark';document.documentElement.style.scrollBehavior='auto';const target=document.querySelector('.post-hero-shell>.sw');const top=target.getBoundingClientRect().top+scrollY;scrollTo(0,top-innerHeight*.42);return true})()`);
+  await wait(900);
+  const snapped=await evaluate(`(()=>{const target=document.querySelector('.post-hero-shell>.sw'),nav=document.querySelector('nav');return {targetTop:target.getBoundingClientRect().top,navBottom:nav.getBoundingClientRect().bottom,snapPadding:parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop),overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth}})()`);
+  assert(snapped.targetTop>=snapped.navBottom-2, `snapped section is obscured by the fixed navigation (${snapped.targetTop}px vs ${snapped.navBottom}px)`);
+  assert(Math.abs(snapped.targetTop-snapped.snapPadding)<=4, `scrolling stopped between sections instead of at the configured snap point (${snapped.targetTop}px vs ${snapped.snapPadding}px)`);
+  assert(!snapped.overflow, 'section snapping introduces horizontal overflow');
+
+  const tallProbe=await evaluate(`(()=>{
+    const target=[...document.querySelectorAll('.post-hero-shell>.sw')].find(section=>section.getBoundingClientRect().height>innerHeight+240);
+    if(!target)return null;
+    const top=target.getBoundingClientRect().top+scrollY;
+    const height=target.getBoundingClientRect().height;
+    const desired=top+Math.min(260,(height-innerHeight)/2);
+    scrollTo(0,desired);
+    return {desired,top,height};
+  })()`);
+  assert(tallProbe, 'expected at least one viewport-taller section for scroll-safety verification');
+  await wait(500);
+  const tallScrollY=await evaluate('scrollY');
+  assert(Math.abs(tallScrollY-tallProbe.desired)<=4, `tall section traps interior scrolling (${tallScrollY}px vs ${tallProbe.desired}px)`);
+
   assert(runtimeErrors.length===0, `runtime errors: ${runtimeErrors.join('; ')}`);
   console.log(JSON.stringify({pass:true,summaries,screenshots:shots}));
   ws.close();
 }
 
 main().catch(error=>{console.error(error.stack||error);process.exitCode=1}).finally(async()=>{
+  try{ws?.close()}catch{}
   await wait(150);
   browser.kill();
   await wait(400);

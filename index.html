@@ -30,9 +30,12 @@
   --bg:#060606;--bg2:#0E0E0E;--bg3:#0A0A0A;
   --surf:#151515;--surf2:#1C1C1C;--surf3:#222;
   --tx:#F0ECE2;--tx2:#9A9590;--tx3:#5A5752;
-  --gold:#D4A853;--gold2:#E8C47A;--goldA:rgba(212,168,83,.12);--goldB:rgba(212,168,83,.06);
-  --teal:#2EC4B6;--tealA:rgba(46,196,182,.12);--tealB:rgba(46,196,182,.06);
-  --coral:#E85D75;--coralA:rgba(232,93,117,.12);--coralB:rgba(232,93,117,.06);
+  --gold-rgb:212,168,83;--teal-rgb:46,196,182;--coral-rgb:232,93,117;
+  --gold:#D4A853;--gold2:#E8C47A;--goldA:rgba(var(--gold-rgb),.12);--goldB:rgba(var(--gold-rgb),.06);
+  --teal:#2EC4B6;--tealA:rgba(var(--teal-rgb),.12);--tealB:rgba(var(--teal-rgb),.06);
+  --coral:#E85D75;--coralA:rgba(var(--coral-rgb),.12);--coralB:rgba(var(--coral-rgb),.06);
+  --hero-glow-gold:rgba(var(--gold-rgb),.1);--hero-glow-teal:rgba(var(--teal-rgb),.08);--hero-glow-coral:rgba(var(--coral-rgb),.06);
+  --hero-atmosphere:radial-gradient(ellipse 50% 70% at 70% 20%,var(--hero-glow-gold),transparent 60%),radial-gradient(ellipse 40% 50% at 20% 80%,var(--hero-glow-teal),transparent 50%),radial-gradient(ellipse 30% 40% at 80% 80%,var(--hero-glow-coral),transparent 40%);
   --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.12);
   --shadow:0 8px 60px rgba(0,0,0,.6);--r:16px;--navH:72px;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -42,9 +45,11 @@
   --bg:#FAF8F4;--bg2:#F2EFEA;--bg3:#EAE7E0;
   --surf:#FFFFFF;--surf2:#F7F5F0;--surf3:#EDEAE4;
   --tx:#141210;--tx2:#514D47;--tx3:#706A62;
-  --gold:#946818;--gold2:#76500B;--goldA:rgba(148,104,24,.13);--goldB:rgba(148,104,24,.055);
-  --teal:#147C73;--tealA:rgba(20,124,115,.11);--tealB:rgba(20,124,115,.05);
-  --coral:#B6384E;--coralA:rgba(182,56,78,.11);--coralB:rgba(182,56,78,.05);
+  --gold-rgb:148,104,24;--teal-rgb:20,124,115;--coral-rgb:182,56,78;
+  --gold:#946818;--gold2:#76500B;--goldA:rgba(var(--gold-rgb),.13);--goldB:rgba(var(--gold-rgb),.055);
+  --teal:#147C73;--tealA:rgba(var(--teal-rgb),.11);--tealB:rgba(var(--teal-rgb),.05);
+  --coral:#B6384E;--coralA:rgba(var(--coral-rgb),.11);--coralB:rgba(var(--coral-rgb),.05);
+  --hero-glow-gold:rgba(var(--gold-rgb),.21);--hero-glow-teal:rgba(var(--teal-rgb),.15);--hero-glow-coral:rgba(var(--coral-rgb),.12);
   --bdr:rgba(0,0,0,.08);--bdr2:rgba(0,0,0,.13);
   --shadow:0 8px 40px rgba(0,0,0,.08);
 }
@@ -83,7 +88,7 @@ nav.scrolled .n-logo{font-size:1.1rem}
 
 /* ===== RESET ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:var(--bg)}
+html{scroll-behavior:smooth;background:var(--bg);scroll-snap-type:y mandatory;scroll-padding-top:var(--navH)}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s var(--ease),color .5s var(--ease)}
 a{text-decoration:none;color:inherit}ul{list-style:none}img{display:block;max-width:100%}button,input,textarea{font-family:inherit}
 ::selection{background:var(--gold);color:#000}
@@ -133,8 +138,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 /* ===== HERO ===== */
 #hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:calc(var(--navH) + clamp(1rem,2.5vh,2rem)) 0 clamp(7.5rem,12vh,9rem);position:relative;overflow:hidden}
 #heroCanvas{position:absolute;inset:0;z-index:0}
-.hero-glow{position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse 50% 70% at 70% 20%,rgba(212,168,83,.1),transparent 60%),radial-gradient(ellipse 40% 50% at 20% 80%,rgba(46,196,182,.08),transparent 50%),radial-gradient(ellipse 30% 40% at 80% 80%,rgba(232,93,117,.06),transparent 40%)}
-[data-theme="light"] .hero-glow{background:radial-gradient(ellipse 60% 70% at 60% 30%,rgba(212,168,83,.15),transparent 60%),radial-gradient(ellipse 50% 50% at 20% 70%,rgba(46,196,182,.1),transparent 50%),radial-gradient(ellipse 40% 40% at 90% 80%,rgba(232,93,117,.08),transparent 40%)}
+.hero-glow{position:absolute;inset:0;pointer-events:none;z-index:1;background:var(--hero-atmosphere)}
 .hero-inner{position:relative;z-index:2;width:100%;max-width:1320px;margin:0 auto;padding:0 clamp(1.5rem,5vw,5rem);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(400px,.9fr);gap:clamp(2rem,4vw,4.5rem);align-items:center}
 .hero-left{display:flex;flex-direction:column;min-width:0}
 .hero-tag{font-family:'Fira Code',monospace;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:flex;align-items:center;gap:.8rem;opacity:0;animation:fu .8s .3s forwards}
@@ -184,23 +188,20 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 .sbar{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:spulse 2s infinite}
 
 /* ===== SECTIONS ===== */
-.post-hero-shell{position:relative;isolation:isolate;background:radial-gradient(ellipse 90% 35% at 50% 0,rgba(46,196,182,.08),transparent 72%),var(--bg);transition:background .6s var(--ease)}
+.post-hero-shell{position:relative;isolation:isolate;background:var(--hero-atmosphere),var(--bg);transition:background .6s var(--ease)}
+#hero,.post-hero-shell>.sw,.site-footer{scroll-snap-align:start;scroll-snap-stop:always}
 .section-atmosphere{position:sticky;top:0;width:100%;height:100vh;height:100svh;margin-bottom:-100vh;margin-bottom:-100svh;overflow:hidden;pointer-events:none;z-index:0}
 #sectionCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.96;filter:saturate(1.12)}
-.ambient-grid{position:absolute;inset:-18%;background-image:linear-gradient(rgba(46,196,182,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,.045) 1px,transparent 1px);background-size:clamp(42px,5vw,72px) clamp(42px,5vw,72px);mask-image:radial-gradient(ellipse 78% 70% at 50% 48%,#000,transparent 78%);transform:perspective(900px) rotateX(62deg) translateY(24%);transform-origin:center;animation:ambientGrid 22s linear infinite}
+.ambient-grid{position:absolute;inset:-18%;background-image:linear-gradient(rgba(var(--teal-rgb),.045) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--teal-rgb),.045) 1px,transparent 1px);background-size:clamp(42px,5vw,72px) clamp(42px,5vw,72px);mask-image:radial-gradient(ellipse 78% 70% at 50% 48%,#000,transparent 78%);transform:perspective(900px) rotateX(62deg) translateY(24%);transform-origin:center;animation:ambientGrid 22s linear infinite}
 .ambient-orb{position:absolute;width:clamp(320px,44vw,720px);aspect-ratio:1;border-radius:50%;filter:blur(95px);opacity:.09;will-change:transform}.ambient-orb-a{left:-18%;top:-14%;background:var(--teal);animation:ambientOrbA 18s ease-in-out infinite alternate}.ambient-orb-b{right:-20%;bottom:-22%;background:var(--coral);animation:ambientOrbB 21s ease-in-out infinite alternate}
-.ambient-ring{position:absolute;right:clamp(-210px,-10vw,-80px);top:11%;width:clamp(330px,43vw,660px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(212,168,83,.1);box-shadow:0 0 80px rgba(212,168,83,.035),inset 0 0 80px rgba(46,196,182,.025);animation:ambientRing 34s linear infinite}.ambient-ring::before,.ambient-ring::after{content:'';position:absolute;border-radius:inherit;inset:13%;border:1px dashed rgba(46,196,182,.12)}.ambient-ring::after{inset:31%;border-style:solid;border-color:rgba(232,93,117,.1)}
-[data-theme="light"] .post-hero-shell{background:radial-gradient(ellipse 90% 35% at 50% 0,rgba(26,158,146,.1),transparent 72%),var(--bg)}
-[data-theme="light"] #sectionCanvas{opacity:.6}[data-theme="light"] .ambient-grid{opacity:.55}[data-theme="light"] .ambient-orb{opacity:.07}
-.sw{--section-bg:var(--bg);--section-edge-start:transparent;--section-edge-end:transparent;--section-rgb:46,196,182;--section-blend:clamp(72px,8vw,128px);padding:clamp(5rem,10vw,9rem) 0;position:relative;z-index:1;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,var(--section-edge-start) 0,color-mix(in srgb,var(--section-bg) 70%,transparent) var(--section-blend),color-mix(in srgb,var(--section-bg) 70%,transparent) calc(100% - var(--section-blend)),var(--section-edge-end) 100%);transition:background .6s var(--ease)}
+.ambient-ring{position:absolute;right:clamp(-210px,-10vw,-80px);top:11%;width:clamp(330px,43vw,660px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(var(--gold-rgb),.1);box-shadow:0 0 80px rgba(var(--gold-rgb),.035),inset 0 0 80px rgba(var(--teal-rgb),.025);animation:ambientRing 34s linear infinite}.ambient-ring::before,.ambient-ring::after{content:'';position:absolute;border-radius:inherit;inset:13%;border:1px dashed rgba(var(--teal-rgb),.12)}.ambient-ring::after{inset:31%;border-style:solid;border-color:rgba(var(--coral-rgb),.1)}
+[data-theme="light"] #sectionCanvas{opacity:.82;filter:saturate(1.28)}[data-theme="light"] .ambient-grid{opacity:.8}[data-theme="light"] .ambient-orb{opacity:.14;filter:blur(82px)}
+.sw{--section-bg:var(--bg);--section-edge-start:transparent;--section-edge-end:transparent;--section-rgb:var(--teal-rgb);--section-primary:var(--hero-glow-teal);--section-secondary:var(--hero-glow-gold);--section-tertiary:var(--hero-glow-coral);--section-blend:clamp(72px,8vw,128px);padding:clamp(5rem,10vw,9rem) 0;position:relative;z-index:1;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse 54% 58% at 78% 24%,var(--section-primary),transparent 68%),radial-gradient(ellipse 48% 52% at 16% 76%,var(--section-secondary),transparent 70%),radial-gradient(ellipse 36% 44% at 88% 88%,var(--section-tertiary),transparent 72%),linear-gradient(180deg,var(--section-edge-start) 0,color-mix(in srgb,var(--section-bg) 78%,transparent) var(--section-blend),color-mix(in srgb,var(--section-bg) 78%,transparent) calc(100% - var(--section-blend)),var(--section-edge-end) 100%);transition:background .6s var(--ease)}
 .sw+.sw{margin-top:-1px}
 .sw-alt{--section-bg:var(--bg2)}
-.sw-warm{--section-rgb:212,168,83}.sw-sage{--section-rgb:46,196,182}.sw-sky{--section-rgb:232,93,117}
+.sw-warm{--section-rgb:var(--gold-rgb);--section-primary:var(--hero-glow-gold);--section-secondary:var(--hero-glow-coral);--section-tertiary:var(--hero-glow-teal)}.sw-sage{--section-rgb:var(--teal-rgb);--section-primary:var(--hero-glow-teal);--section-secondary:var(--hero-glow-gold);--section-tertiary:var(--hero-glow-coral)}.sw-sky{--section-rgb:var(--coral-rgb);--section-primary:var(--hero-glow-coral);--section-secondary:var(--hero-glow-teal);--section-tertiary:var(--hero-glow-gold)}
 .sw-warm:has(+.sw-warm){--section-edge-end:var(--section-bg)}.sw-warm+.sw-warm{--section-edge-start:var(--section-bg)}
-[data-theme="light"] .sw-warm{--section-bg:#FAF5EB}
-[data-theme="light"] .sw-sage{--section-bg:#ECF3EF}
-[data-theme="light"] .sw-sky{--section-bg:#ECF1F6}
-[data-theme="light"] .sw{background:linear-gradient(180deg,var(--section-edge-start) 0,color-mix(in srgb,var(--section-bg) 88%,transparent) var(--section-blend),color-mix(in srgb,var(--section-bg) 88%,transparent) calc(100% - var(--section-blend)),var(--section-edge-end) 100%)}
+[data-theme="light"] .sw{--section-bg:var(--bg)}[data-theme="light"] .sw-alt{--section-bg:var(--bg2)}
 .sw>.wrap{position:relative;z-index:2}
 .sw::before{content:'';position:absolute;inset:-12%;z-index:0;pointer-events:none;background:radial-gradient(clamp(280px,40vw,620px) circle at var(--ai-x,78%) var(--ai-y,34%),rgba(var(--section-rgb),.15),transparent 68%);opacity:.78;transition:background .12s linear}
 .sw::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(105deg,transparent 43%,rgba(var(--section-rgb),.055) 50%,transparent 57%);background-size:240% 100%;background-position:-140% 0;mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);animation:aiScan 12s linear infinite}
@@ -275,7 +276,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 .skill-card>*{position:relative;z-index:1}.skill-card-wide{grid-column:span 2}
 .skill-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.25rem}.skill-glyph{width:44px;height:44px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--skill-accent) 35%,transparent);border-radius:13px;background:var(--skill-tint);color:var(--skill-accent);box-shadow:inset 0 0 20px rgba(255,255,255,.02)}.skill-glyph svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.skill-index{font:500 .62rem 'Fira Code',monospace;color:var(--tx3);letter-spacing:.16em}.skill-title{font:700 1.15rem 'Syne',sans-serif;margin-bottom:.45rem}.skill-copy{font-size:.78rem;line-height:1.65;color:var(--tx3);margin-bottom:1.2rem;max-width:50ch}
 .skill-tags{display:flex;flex-wrap:wrap;gap:.45rem}.skill-tag{min-height:31px;display:inline-flex;align-items:center;gap:.42rem;padding:.34rem .62rem .34rem .4rem;border:1px solid var(--bdr);border-radius:7px;background:rgba(0,0,0,.12);color:var(--tx2);font:400 .68rem 'Fira Code',monospace;transition:color .22s,border-color .22s,background .22s,transform .22s}.skill-tag:hover{color:var(--skill-accent);border-color:color-mix(in srgb,var(--skill-accent) 52%,transparent);background:var(--skill-tint);transform:translateY(-2px)}
-.skill-tool-icon{width:18px;height:18px;flex:0 0 18px;display:grid;place-items:center;border-radius:5px;overflow:hidden;transition:transform .22s var(--ease),border-color .22s,background .22s}.skill-tool-icon[data-kind="asset"]{padding:2px;border:1px solid var(--bdr);background:color-mix(in srgb,var(--surf) 82%,white 18%)}.skill-tool-icon img{display:block;width:100%;height:100%;object-fit:contain}.skill-tool-icon[data-kind="mark"]{border:1px solid hsl(var(--tool-hue) 70% 58%/.32);background:hsl(var(--tool-hue) 70% 52%/.12);color:hsl(var(--tool-hue) 72% 68%);font:700 .46rem 'Fira Code',monospace;letter-spacing:-.06em}.skill-tag:hover .skill-tool-icon{transform:translateY(-1px) scale(1.08);border-color:color-mix(in srgb,var(--skill-accent) 45%,transparent)}.skill-tool-label{white-space:nowrap}[data-theme="dark"] .skill-tool-icon img[src*="nextjs"]{filter:invert(1)}
+.skill-tool-icon{width:18px;height:18px;flex:0 0 18px;display:grid;place-items:center;border-radius:5px;overflow:hidden;padding:2px;border:1px solid var(--bdr);background:color-mix(in srgb,var(--surf) 82%,white 18%);transition:transform .22s var(--ease),border-color .22s,background .22s}.skill-tool-icon img{display:block;width:100%;height:100%;object-fit:contain}.skill-tag:hover .skill-tool-icon{transform:translateY(-1px) scale(1.08);border-color:color-mix(in srgb,var(--skill-accent) 45%,transparent)}.skill-tool-label{white-space:nowrap}[data-theme="dark"] .skill-tool-icon img[src*="nextjs"]{filter:invert(1)}
 [data-theme="light"] .skill-card{background:rgba(255,255,255,.52)}[data-theme="light"] .skill-tag{background:rgba(255,255,255,.5)}
 
 /* ===== EXPERIENCE ===== */
@@ -328,6 +329,8 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 
 /* ===== ACHIEVEMENTS ===== */
 .award-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:3rem}.award-card{min-height:255px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:1.8rem;background:linear-gradient(160deg,var(--surf),var(--bg2));border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;transition:transform .35s var(--ease),border-color .35s}.award-card:hover{transform:translateY(-6px);border-color:var(--gold)}.award-index{position:absolute;top:1.4rem;right:1.5rem;font:500 .68rem 'Fira Code',monospace;color:var(--tx3)}.award-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;margin-bottom:auto;background:var(--goldA);border:1px solid rgba(212,168,83,.25);color:var(--gold);font:700 .9rem 'Fira Code',monospace}.award-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;line-height:1.3}.award-org{font-size:.78rem;color:var(--tx3);margin-top:.55rem;line-height:1.5}.award-links{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.15rem;padding-top:1rem;border-top:1px solid var(--bdr)}.award-link{display:inline-flex;align-items:center;gap:.42rem;padding:.46rem .7rem;border:1px solid var(--bdr2);border-radius:8px;background:color-mix(in srgb,var(--surf) 72%,transparent);color:var(--tx2);font:500 .65rem 'Fira Code',monospace;line-height:1.2;transition:transform .22s var(--ease),color .22s,border-color .22s,background .22s}.award-link::after{content:'↗';font-size:.76rem;color:var(--gold)}.award-link:hover{transform:translateY(-2px);color:var(--tx);border-color:var(--gold);background:var(--goldA)}
+.award-card-photo{--award-photo-overlay:linear-gradient(180deg,rgba(6,6,6,.16) 0%,rgba(6,6,6,.42) 42%,rgba(6,6,6,.9) 76%,rgba(6,6,6,.97) 100%),linear-gradient(90deg,rgba(6,6,6,.2),transparent 52%);background:#0A0A0A}.award-card-photo::after{content:'';position:absolute;inset:0;z-index:1;background:var(--award-photo-overlay);pointer-events:none}.award-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:center 36%;transform:scale(1.015);transition:transform .7s var(--ease),filter .5s var(--ease)}.award-card-photo:hover .award-bg{transform:scale(1.07);filter:saturate(1.08)}.award-card-photo>:not(.award-bg):not(.award-index){position:relative;z-index:2}.award-card-photo .award-index{position:absolute;z-index:2;color:rgba(255,255,255,.78);text-shadow:0 1px 12px rgba(0,0,0,.7)}.award-card-photo .award-icon{background:rgba(6,6,6,.58);border-color:rgba(232,196,122,.48);color:#E8C47A;backdrop-filter:blur(8px)}.award-card-photo .award-title{color:#FFF;text-shadow:0 2px 20px rgba(0,0,0,.65)}.award-card-photo .award-org{color:rgba(255,255,255,.74)}.award-card-photo .award-links{border-color:rgba(255,255,255,.16)}.award-card-photo .award-link{color:rgba(255,255,255,.86);border-color:rgba(255,255,255,.2);background:rgba(6,6,6,.58);backdrop-filter:blur(10px)}.award-card-photo .award-link::after{color:#E8C47A}.award-card-photo .award-link:hover{color:#FFF;border-color:#E8C47A;background:rgba(6,6,6,.78)}
+.award-card-academic-photo .award-bg{object-position:center 42%}
 
 /* ===== PROJECT MODAL ===== */
 .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(14px);z-index:998;align-items:center;justify-content:center;padding:2rem}
@@ -381,6 +384,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 
 /* ===== MERGED CONTACT + FOOTER ===== */
 .site-footer{border-top:1px solid var(--bdr);padding:clamp(5rem,9vw,8rem) 0 max(2.5rem,env(safe-area-inset-bottom));background:linear-gradient(180deg,color-mix(in srgb,var(--bg2) 82%,transparent),var(--bg2));transition:background .6s var(--ease)}
+.ft-big{font-family:'Syne',sans-serif;font-size:clamp(3rem,10vw,9rem);font-weight:800;line-height:.95;color:var(--tx);opacity:.04;position:absolute;z-index:1;bottom:-1rem;right:-1rem;pointer-events:none;user-select:none;white-space:nowrap}
 .footer-signoff{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;margin-top:clamp(3.5rem,7vw,6rem);padding-top:1.5rem;border-top:1px solid var(--bdr);position:relative;z-index:1}.footer-identity{display:flex;flex-direction:column;gap:.35rem}.footer-identity strong{font:700 1.25rem 'Syne',sans-serif}.footer-identity span{font-size:.76rem;color:var(--tx3)}.ft-copy{max-width:460px;text-align:right;font-size:.76rem;line-height:1.6;color:var(--tx3)}
 
 /* ===== ADMIN ===== */
@@ -433,9 +437,12 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 [data-theme="light"] .btn-gold,[data-theme="light"] .filter-btn.active,[data-theme="light"] .filter-btn:hover,[data-theme="light"] .cert-filter.active{background:#D8AE5A;border-color:#D8AE5A;color:#171108}
 [data-theme="light"] .btn-gold:hover{background:#C99B3F;box-shadow:0 12px 34px rgba(148,104,24,.22)}
 [data-theme="light"] .btn-ghost{background:rgba(255,255,255,.34)}
-[data-theme="light"] .ambient-grid{background-image:linear-gradient(rgba(20,124,115,.065) 1px,transparent 1px),linear-gradient(90deg,rgba(20,124,115,.065) 1px,transparent 1px)}
-[data-theme="light"] .ambient-ring{border-color:rgba(148,104,24,.16);box-shadow:0 0 70px rgba(148,104,24,.045),inset 0 0 70px rgba(20,124,115,.035)}
-[data-theme="light"] .ambient-ring::before{border-color:rgba(20,124,115,.17)}[data-theme="light"] .ambient-ring::after{border-color:rgba(182,56,78,.13)}
+[data-theme="light"] .ambient-grid{background-image:linear-gradient(rgba(20,124,115,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(20,124,115,.1) 1px,transparent 1px)}
+[data-theme="light"] .ambient-ring{border-color:rgba(148,104,24,.24);box-shadow:0 0 80px rgba(148,104,24,.09),inset 0 0 80px rgba(20,124,115,.07)}
+[data-theme="light"] .ambient-ring::before{border-color:rgba(20,124,115,.26)}[data-theme="light"] .ambient-ring::after{border-color:rgba(182,56,78,.2)}
+[data-theme="light"] .sw::before{background:radial-gradient(clamp(300px,43vw,680px) circle at var(--ai-x,78%) var(--ai-y,34%),rgba(var(--section-rgb),.23),transparent 66%);opacity:.92}
+[data-theme="light"] .sw:nth-child(even)::before{background:radial-gradient(clamp(300px,43vw,680px) circle at var(--ai-x,22%) var(--ai-y,46%),rgba(var(--section-rgb),.2),transparent 66%)}
+[data-theme="light"] .sw::after{background:linear-gradient(105deg,transparent 42%,rgba(var(--section-rgb),.09) 50%,transparent 58%)}
 
 [data-theme="light"] .id-card{background:linear-gradient(155deg,rgba(255,255,255,.94),rgba(246,243,237,.92));box-shadow:0 18px 55px rgba(54,47,38,.07)}
 [data-theme="light"] .id-card::after{background-image:linear-gradient(rgba(20,18,16,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(20,18,16,.035) 1px,transparent 1px)}
@@ -575,7 +582,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
   .soc{min-width:0;padding:.8rem .9rem;font-size:.8rem;overflow-wrap:anywhere}.soc-i{flex-basis:28px}
   .c-form .btn{width:100%;justify-content:center}.modal-ov{padding:.55rem}.modal-panel{max-height:95dvh;border-radius:15px}.modal-img,.modal-img-placeholder{border-radius:15px 15px 0 0}.modal-body{padding:1.25rem}.modal-title{margin-bottom:.85rem}.modal-links .btn{flex:1 1 100%;justify-content:center}
   .adm-panel{width:calc(100vw - 1rem);padding:1.1rem}.ap-title{font-size:1.3rem}.ap-login{padding:2rem .5rem}.ap-li{align-items:flex-start;gap:.75rem}.ap-hint{padding:1rem;overflow-wrap:anywhere}
-  .footer-signoff{align-items:flex-start;flex-direction:column;gap:1rem}.ft-copy{text-align:left}
+  .footer-signoff{align-items:flex-start;flex-direction:column;gap:1rem}.ft-copy{text-align:left}.ft-big{font-size:18vw}
 }
 @media(max-width:380px){
   .hero-h1{font-size:clamp(2.35rem,12.8vw,2.9rem)}
@@ -660,7 +667,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
   </div>
   <div class="hero-stats" aria-label="Portfolio statistics"><div class="hero-stats-inner">
     <div class="hs"><span class="hs-n">2024</span><span class="hs-l">AI Journey Began</span></div>
-    <div class="hs"><span class="hs-n" id="githubCommitCount" aria-live="polite">362+</span><span class="hs-l">GitHub Commits</span></div>
+    <div class="hs"><span class="hs-n" id="githubCommitCount" aria-live="polite">366+</span><span class="hs-l">GitHub Commits</span></div>
     <div class="hs"><span class="hs-n" id="featuredSystemCount">10</span><span class="hs-l">Featured Systems</span></div>
     <div class="hs"><span class="hs-n" id="githubRepoCount" aria-live="polite">22</span><span class="hs-l">Repositories</span></div>
   </div></div>
@@ -716,9 +723,9 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
     <div class="about-right">
       <div class="label label-gold rv">About Me</div>
       <h2 class="rv rd1 parallax-el">Curious About Models.<br>Serious About Impact.</h2>
-      <p class="rv rd2">I’m a second-year B.Sc. (Hons.) Artificial Intelligence undergraduate at the University of Moratuwa, focused on machine learning, deep learning, applied AI, and intelligent software systems.</p>
-      <p class="rv rd2">My work sits where models meet products: predictive maintenance, explainable ML, fine-tuned transformers, retrieval-augmented generation, autonomous agents, and full-stack applications that make those capabilities useful.</p>
-      <p class="rv rd2">I also lead creative teams and volunteer as a web developer. That mix of engineering, visual thinking, and communication helps me turn complex ideas into experiences people can understand and trust.</p>
+      <p class="rv rd2">I’m a second-year B.Sc. (Hons.) Artificial Intelligence undergraduate at the University of Moratuwa, building a broad foundation across machine learning, deep learning, data, intelligent systems, and software engineering.</p>
+      <p class="rv rd2">I enjoy solving diverse problems across the full AI lifecycle—from understanding the challenge and exploring data to designing, evaluating, and deploying models and intelligent applications. Rather than limiting myself to one domain or technique, I choose the approach that best fits each real-world need.</p>
+      <p class="rv rd2">My goal is to build AI systems that are reliable, responsible, understandable, and genuinely useful. I bring curiosity, adaptability, and product thinking to every project while continuously expanding my skills as the field evolves.</p>
     </div>
   </div>
 </section></div>
@@ -842,8 +849,8 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 <section id="achievements" class="wrap">
   <div class="label label-gold rv">Recognition</div><h2 class="rv rd1">Achievements</h2>
   <div class="award-grid">
-    <article class="award-card rv rd1"><span class="award-index">01 / DATA</span><div class="award-icon">TOP</div><div class="award-title">Finalist — DataXplore 2.0</div><div class="award-org">Statistics Society · University of Sri Jayewardenepura</div><div class="award-links"><a class="award-link" href="https://www.linkedin.com/posts/dinusha-ekanayake-0a0963266_dataxplore2-datascience-machinelearning-ugcPost-7469704053065777152-6B4L/?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAEFIBrgBN44I5NTNbC_rxLbTJbVQzQQkAXY" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 finalist post on LinkedIn">LinkedIn Post</a><a class="award-link" href="https://github.com/Dinusha-Ekanayake/Bayesian_Minds-DataXplore_2-0_Stage_03" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 Stage 03 repository on GitHub">Stage 03 Repo</a><a class="award-link" href="https://github.com/Dinusha-Ekanayake/Stroke_Risk_Prediction-DataXplore_2.0-Competition-Stage_01" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 Stage 01 repository on GitHub">Stage 01 Repo</a></div></article>
-    <article class="award-card rv rd2"><span class="award-index">02 / ACADEMIC</span><div class="award-icon">#02</div><div class="award-title">Best G.C.E. A/L Results — Common Stream</div><div class="award-org">S. Thomas’ College, Bandarawela · District Rank 2nd</div></article>
+    <article class="award-card award-card-photo rv rd1"><img class="award-bg" src="assets/achievements/dataxplore-finalist.jpg" alt="" aria-hidden="true"><span class="award-index">01 / DATA</span><div class="award-icon">TOP</div><div class="award-title">Finalist — DataXplore 2.0</div><div class="award-org">Statistics Society · University of Sri Jayewardenepura</div><div class="award-links"><a class="award-link" href="https://www.linkedin.com/posts/dinusha-ekanayake-0a0963266_dataxplore2-datascience-machinelearning-ugcPost-7469704053065777152-6B4L/?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAEFIBrgBN44I5NTNbC_rxLbTJbVQzQQkAXY" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 finalist post on LinkedIn">LinkedIn Post</a><a class="award-link" href="https://github.com/Dinusha-Ekanayake/Bayesian_Minds-DataXplore_2-0_Stage_03" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 Stage 03 repository on GitHub">Stage 03 Repo</a><a class="award-link" href="https://github.com/Dinusha-Ekanayake/Stroke_Risk_Prediction-DataXplore_2.0-Competition-Stage_01" target="_blank" rel="noopener noreferrer" aria-label="View the DataXplore 2.0 Stage 01 repository on GitHub">Stage 01 Repo</a></div></article>
+    <article class="award-card award-card-photo award-card-academic-photo rv rd2"><img class="award-bg" src="assets/achievements/best-al-results.jpg" alt="" aria-hidden="true"><span class="award-index">02 / ACADEMIC</span><div class="award-icon">#02</div><div class="award-title">Best G.C.E. A/L Results — Common Stream</div><div class="award-org">S. Thomas’ College, Bandarawela · District Rank 2nd</div></article>
   </div>
 </section></div>
 
@@ -892,6 +899,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
 
 <!-- MERGED CONTACT + FOOTER -->
 <footer class="site-footer sw sw-alt sw-warm">
+<div class="ft-big" aria-hidden="true">DINUSHA</div>
 <section id="contact" class="wrap">
   <div class="label label-gold rv">Start a Conversation</div><h2 class="rv rd1">Let’s Build Something Intelligent.</h2>
   <div class="contact-grid">
@@ -1023,7 +1031,7 @@ const D_CERT=[
 ];
 const D_PROJ=[
   {title:'PredictiX',type:'AI/ML · Predictive Maintenance',category:'AI/ML',desc:'Production-focused intelligence for predicting failures, maintenance needs, cost, and remaining useful life.',fullDesc:'An ongoing industry project for warehouse vehicle fleets. PredictiX combines XGBoost and LightGBM failure prediction, SHAP explanations, Weibull survival analysis for remaining useful life, fine-tuned DistilBERT ticket intelligence, and RAG-powered reports and chat. The product is delivered through a Next.js interface, FastAPI services, PostgreSQL/Supabase, and AWS EC2.',tech:['XGBoost','LightGBM','SHAP','DistilBERT','LangChain','FastAPI','Next.js','AWS'],gh:'https://github.com/Dinusha-Ekanayake',demo:'',img:'assets/projects/predictix.png',visual:'PRED',g:'pj-g1',featured:true},
-  {title:'Multi-Agent Research Assistant',type:'Agentic AI · Research Automation',category:'Agentic AI',desc:'Three specialized agents research, fact-check, and assemble a structured report.',fullDesc:'A multi-agent research workflow with dedicated research, fact-checking, and report-writing agents. It orchestrates web search, structured validation, and document generation to turn a question into a verified DOCX report through a Streamlit interface.',tech:['Python','LangChain','OpenAI','Pydantic','Streamlit','DOCX'],gh:'https://github.com/Dinusha-Ekanayake',demo:'',img:'assets/projects/research-assistant.png',visual:'AGENT',g:'pj-g3'},
+  {title:'Research Assistant – Multi-Agent AI System',type:'Agentic AI · Research Automation',period:'Dec 2025 – Present',category:'Agentic AI',desc:'Specialized research, fact-checking, and writing agents turn a topic into an evidence-aware, downloadable report.',fullDesc:'A multi-agent AI research system built with LangChain, OpenAI, Claude, and Streamlit. A Research Agent combines LLM reasoning with real-time DuckDuckGo search to create structured topic summaries; a Fact-Checking Agent verifies claims against evidence and produces a detailed validation report; and a Writer Agent transforms the results into long-form academic or professional documents. Pydantic schemas keep agent outputs structured, while a modular architecture separates agents, tools, prompts, and exporters. The interactive Streamlit workflow supports research, fact-checking, report generation, and fully formatted DOCX downloads.',tech:['Python','LangChain','Tool Calling','OpenAI GPT-4o-mini','Claude 3.5 Sonnet','Pydantic','DuckDuckGo Search','Streamlit','DOCX'],gh:'https://github.com/Dinusha-Ekanayake',demo:'',img:'assets/projects/research-assistant.png',visual:'AGENT',g:'pj-g3'},
   {title:'CV Mate',type:'AI Product · Document Intelligence',category:'AI/ML',desc:'An AI-assisted CV workspace with ATS analysis, keyword gaps, rewrites, and job matching.',fullDesc:'A cross-platform CV companion with live preview, ATS analysis, keyword-gap detection, AI rewriting, profile summaries, and job matching. Built with a React/Vite interface, Firebase, Gemini, Electron, and portable PDF, DOCX, and JSON workflows.',tech:['React','Vite','Firebase','Gemini','Electron','PDF','DOCX'],gh:'https://github.com/Dinusha-Ekanayake',demo:'',img:'assets/projects/cv-mate.png',visual:'CV',g:'pj-g4'},
   {title:'ReClaim',type:'Full Stack · Semantic Search',category:'Full Stack',desc:'A smart lost-and-found platform using semantic similarity, location, date, and category signals.',fullDesc:'An ongoing lost-and-found platform that ranks potential matches using category, keywords, GPS proximity, date, and OpenAI embedding similarity. ReClaim includes real-time communication, cloud media, authenticated user flows, and a modern deployed architecture.',tech:['Next.js','Node.js','PostgreSQL','Prisma','Embeddings','Socket.io','Cloudinary'],gh:'https://github.com/Dinusha-Ekanayake',demo:'',img:'assets/projects/reclaim.png',visual:'MATCH',g:'pj-g2'},
   {title:'PageTurn',type:'Full Stack · Educational E-commerce',category:'Full Stack',desc:'A student-focused marketplace with 1,010+ educational books, advanced discovery, localized pricing, and commerce flows.',fullDesc:'A full-stack educational materials marketplace for buying and selling textbooks and study resources. PageTurn pairs a responsive React interface with Node.js and Express APIs backed by SQLite, organizing 1,010+ books across 12 academic categories with search, multi-filtering, sorting, pagination, localized LKR pricing, cart, and wishlist experiences.',tech:['React','Node.js','Express','SQLite','JWT','REST API','CSS'],gh:'https://github.com/Dinusha-Ekanayake/PageTurn_Educational_Bookstore',demo:'',img:'assets/projects/pageturn.png',visual:'BOOK',g:'pj-g4'},
@@ -1041,10 +1049,10 @@ const sv=(k,d)=>{try{localStorage.setItem(k,JSON.stringify(d))}catch{}};
 const certKey=name=>String(name||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]/g,'');
 const dedupeCerts=items=>{const seen=new Set();return items.filter(item=>{const key=certKey(item.name);if(!key||seen.has(key))return false;seen.add(key);return true}).map(item=>({...item,category:item.category||'development',mark:item.mark||item.emoji||'CERT'}))};
 const CERT_DATA_VERSION='2026-07-dataxplore-links';
-const PROJECT_DATA_VERSION='2026-07-smartflow-details';
+const PROJECT_DATA_VERSION='2026-07-project-detail-refresh';
 let exps=ld('de4_exp',D_EXP),projs=ld('de4_proj',D_PROJ),certs;
 let projectDataVersion='';try{projectDataVersion=localStorage.getItem('de4_project_version')||''}catch{}
-if(projectDataVersion!==PROJECT_DATA_VERSION){const requiredTitles=['PageTurn','CG Algorithm Visualizer','Algorithm Selection Expert System','AI Prompt Quality Analyzer','AI/ML Engineering Portfolio'];requiredTitles.forEach(title=>{const seed=D_PROJ.find(project=>project.title===title);if(!seed||projs.some(project=>String(project.title||'').toLowerCase()===title.toLowerCase()))return;if(title==='PageTurn')projs.splice(Math.min(4,projs.length),0,{...seed});else projs.push({...seed})});D_PROJ.forEach(seed=>{const saved=projs.find(project=>String(project.title||'').toLowerCase()===seed.title.toLowerCase());if(saved&&seed.img)saved.img=seed.img});const smartFlowSeed=D_PROJ.find(project=>project.title.startsWith('SmartFlow')),savedSmartFlow=projs.find(project=>String(project.title||'').startsWith('SmartFlow'));if(smartFlowSeed&&savedSmartFlow)Object.assign(savedSmartFlow,smartFlowSeed);sv('de4_proj',projs);try{localStorage.setItem('de4_project_version',PROJECT_DATA_VERSION)}catch{}}
+if(projectDataVersion!==PROJECT_DATA_VERSION){const requiredTitles=['PageTurn','CG Algorithm Visualizer','Algorithm Selection Expert System','AI Prompt Quality Analyzer','AI/ML Engineering Portfolio'];requiredTitles.forEach(title=>{const seed=D_PROJ.find(project=>project.title===title);if(!seed||projs.some(project=>String(project.title||'').toLowerCase()===title.toLowerCase()))return;if(title==='PageTurn')projs.splice(Math.min(4,projs.length),0,{...seed});else projs.push({...seed})});D_PROJ.forEach(seed=>{const saved=projs.find(project=>String(project.title||'').toLowerCase()===seed.title.toLowerCase());if(saved&&seed.img)saved.img=seed.img});const seededUpdates=[{seed:D_PROJ.find(project=>project.title.startsWith('SmartFlow')),saved:projs.find(project=>String(project.title||'').startsWith('SmartFlow'))},{seed:D_PROJ.find(project=>project.title.startsWith('Research Assistant')),saved:projs.find(project=>String(project.title||'').includes('Research Assistant'))}];seededUpdates.forEach(({seed,saved})=>{if(seed&&saved)Object.assign(saved,seed)});sv('de4_proj',projs);try{localStorage.setItem('de4_project_version',PROJECT_DATA_VERSION)}catch{}}
 const storedCerts=ld('de4_cert',[]),legacyCertNames=['Machine Learning Specialization','Introduction to Cybersecurity','Python Programming & Frontend Web Development','Intermediate Machine Learning & Time Series','Python & Data Science'];
 let certDataVersion='';try{certDataVersion=localStorage.getItem('de4_cert_version')||''}catch{}
 if(certDataVersion!==CERT_DATA_VERSION){const replaced=new Set([...D_CERT.map(item=>certKey(item.name)),...legacyCertNames.map(certKey)]),custom=storedCerts.filter(item=>!replaced.has(certKey(item.name)));certs=dedupeCerts([...D_CERT,...custom]);sv('de4_cert',certs);try{localStorage.setItem('de4_cert_version',CERT_DATA_VERSION)}catch{}}else{certs=dedupeCerts(storedCerts.length?storedCerts:D_CERT);sv('de4_cert',certs)}
@@ -1145,10 +1153,10 @@ const canvas=document.getElementById('heroCanvas'),ctx=canvas.getContext('2d');
 let W,H,pts=[],canvasActive=true;function rC(){const dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}rC();addEventListener('resize',rC);
 class P{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*1.5+.5;this.a=Math.random()*.4+.1}
 update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W)this.vx*=-1;if(this.y<0||this.y>H)this.vy*=-1}
-draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=h.dataset.theme==='dark'?`rgba(212,168,83,${this.a})`:`rgba(140,100,30,${this.a*.5})`;ctx.fill()}}
+draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=h.dataset.theme==='dark'?`rgba(212,168,83,${this.a})`:`rgba(140,100,30,${this.a*.72})`;ctx.fill()}}
 for(let i=0;i<(innerWidth<768?36:64);i++)pts.push(new P());
 document.addEventListener('visibilitychange',()=>canvasActive=!document.hidden);
-(function anim(){if(canvasActive){ctx.clearRect(0,0,W,H);const dk=h.dataset.theme==='dark';for(let i=0;i<pts.length;i++){pts[i].update();pts[i].draw();for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);const a=(1-d/150)*(dk?.08:.04);ctx.strokeStyle=dk?`rgba(212,168,83,${a})`:`rgba(140,100,30,${a})`;ctx.lineWidth=.5;ctx.stroke()}}}}requestAnimationFrame(anim)})();
+(function anim(){if(canvasActive){ctx.clearRect(0,0,W,H);const dk=h.dataset.theme==='dark';for(let i=0;i<pts.length;i++){pts[i].update();pts[i].draw();for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);const a=(1-d/150)*(dk?.08:.065);ctx.strokeStyle=dk?`rgba(212,168,83,${a})`:`rgba(140,100,30,${a})`;ctx.lineWidth=.5;ctx.stroke()}}}}requestAnimationFrame(anim)})();
 
 // POINTER-RESPONSIVE 3D TECHNOLOGY CLOUD
 (function initLogoCloud(){
@@ -1194,15 +1202,20 @@ document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
 // RENDER FUNCTIONS
 const g=id=>document.getElementById(id);
 
-// Individual skill chips use local technology marks where available and compact
-// visual abbreviations elsewhere, keeping the full stack legible without network assets.
-const SKILL_ICON_ASSETS=Object.freeze({Python:'assets/icons/python.svg',PyTorch:'assets/icons/pytorch.svg',TensorFlow:'assets/icons/tensorflow.svg','Scikit-learn':'assets/icons/scikitlearn.svg','Hugging Face':'assets/icons/huggingface.svg',FastAPI:'assets/icons/fastapi.svg',React:'assets/icons/react.svg','Next.js':'assets/icons/nextjs.svg',PostgreSQL:'assets/icons/postgresql.svg',NumPy:'assets/icons/numpy.svg'});
-const SKILL_TOOL_MARKS=Object.freeze({'XGBoost':'XG','LightGBM':'LGB',CatBoost:'CB',SHAP:'SH','DistilBERT':'DB',Transformers:'TR','Fine-Tuning':'FT',Kaggle:'KG',LangChain:'LC',LangGraph:'LG',RAG:'RAG',Groq:'GQ','OpenAI Models':'OAI',Gemini:'GM',Claude:'CL','Llama 3.3':'L3',R:'R',Java:'JV',JavaScript:'JS',TypeScript:'TS',C:'C','C++':'C++',PHP:'PHP',Prolog:'PL','Node.js':'ND',Express:'EX','Tailwind CSS':'TW','shadcn/ui':'UI',Streamlit:'ST',MySQL:'MY',SQLite:'SQL',Supabase:'SP',Firebase:'FB','AWS EC2':'AWS',Vercel:'VC',Render:'RD',Pandas:'PD',Matplotlib:'MP',Seaborn:'SB',Jupyter:'JP',Colab:'CLB','Time Series':'TS','Survival Analysis':'SA',Git:'GT',GitHub:'GH',Postman:'PM','Thunder Client':'TC',Figma:'FG','Cisco Packet Tracer':'PT',Leadership:'LD','Analytical Thinking':'AT','Problem Solving':'PS'});
-function skillToolMark(name){if(SKILL_TOOL_MARKS[name])return SKILL_TOOL_MARKS[name];const words=name.replace(/[^A-Za-z0-9+ ]/g,' ').trim().split(/\s+/).filter(Boolean);return(words.length>1?words.map(word=>word[0]).join(''):words[0]?.slice(0,2)||'?').toUpperCase().slice(0,3)}
-function enhanceSkillTags(){document.querySelectorAll('#skills .skill-tag').forEach(tag=>{if(tag.querySelector('.skill-tool-icon'))return;const name=tag.textContent.trim(),asset=SKILL_ICON_ASSETS[name],icon=document.createElement('span'),label=document.createElement('span');icon.className='skill-tool-icon';icon.dataset.kind=asset?'asset':'mark';icon.setAttribute('aria-hidden','true');if(asset){const image=document.createElement('img');image.src=asset;image.alt='';image.loading='lazy';icon.appendChild(image)}else{icon.textContent=skillToolMark(name);icon.style.setProperty('--tool-hue',String([...name].reduce((total,char)=>total+char.charCodeAt(0),0)%360))}label.className='skill-tool-label';label.textContent=name;tag.textContent='';tag.setAttribute('aria-label',name);tag.append(icon,label)})}
+// Every skill chip uses a local brand or semantic SVG; no letter-mark fallbacks.
+const SKILL_ICON_ASSETS=Object.freeze({
+  PyTorch:'assets/icons/pytorch.svg',TensorFlow:'assets/icons/tensorflow.svg','Scikit-learn':'assets/icons/scikitlearn.svg',XGBoost:'assets/icons/xgboost.svg',LightGBM:'assets/icons/lightgbm.svg',CatBoost:'assets/icons/catboost.svg',SHAP:'assets/icons/shap.svg',DistilBERT:'assets/icons/huggingface.svg',Transformers:'assets/icons/huggingface.svg','Hugging Face':'assets/icons/huggingface.svg','Fine-Tuning':'assets/icons/fine-tuning.svg',Kaggle:'assets/icons/kaggle.svg',
+  LangChain:'assets/icons/langchain.svg',LangGraph:'assets/icons/langgraph.svg',RAG:'assets/icons/rag.svg',Groq:'assets/icons/groq.svg','OpenAI Models':'assets/icons/openai.svg',Gemini:'assets/icons/gemini.svg',Claude:'assets/icons/claude.svg','Llama 3.3':'assets/icons/llama.svg',
+  Python:'assets/icons/python.svg',R:'assets/icons/r.svg',Java:'assets/icons/java.svg',JavaScript:'assets/icons/javascript.svg',TypeScript:'assets/icons/typescript.svg',C:'assets/icons/c.svg','C++':'assets/icons/cplusplus.svg',PHP:'assets/icons/php.svg',Prolog:'assets/icons/prolog.svg',
+  FastAPI:'assets/icons/fastapi.svg','Node.js':'assets/icons/nodejs.svg',Express:'assets/icons/express.svg',React:'assets/icons/react.svg','Next.js':'assets/icons/nextjs.svg','Tailwind CSS':'assets/icons/tailwindcss.svg','shadcn/ui':'assets/icons/shadcnui.svg',Streamlit:'assets/icons/streamlit.svg',
+  PostgreSQL:'assets/icons/postgresql.svg',MySQL:'assets/icons/mysql.svg',SQLite:'assets/icons/sqlite.svg',Supabase:'assets/icons/supabase.svg',Firebase:'assets/icons/firebase.svg','AWS EC2':'assets/icons/aws-ec2.svg',Vercel:'assets/icons/vercel.svg',Render:'assets/icons/render.svg',
+  NumPy:'assets/icons/numpy.svg',Pandas:'assets/icons/pandas.svg',Matplotlib:'assets/icons/matplotlib.svg',Seaborn:'assets/icons/seaborn.svg',Jupyter:'assets/icons/jupyter.svg',Colab:'assets/icons/colab.svg','Time Series':'assets/icons/time-series.svg','Survival Analysis':'assets/icons/survival-analysis.svg',
+  Git:'assets/icons/git.svg',GitHub:'assets/icons/github.svg',Postman:'assets/icons/postman.svg','Thunder Client':'assets/icons/thunder-client.svg',Figma:'assets/icons/figma.svg','Cisco Packet Tracer':'assets/icons/cisco.svg',Leadership:'assets/icons/leadership.svg','Analytical Thinking':'assets/icons/analytical-thinking.svg','Problem Solving':'assets/icons/problem-solving.svg'
+});
+function enhanceSkillTags(){document.querySelectorAll('#skills .skill-tag').forEach(tag=>{if(tag.querySelector('.skill-tool-icon'))return;const name=tag.textContent.trim(),asset=SKILL_ICON_ASSETS[name]||'assets/icons/problem-solving.svg',icon=document.createElement('span'),image=document.createElement('img'),label=document.createElement('span');icon.className='skill-tool-icon';icon.dataset.kind='asset';icon.setAttribute('aria-hidden','true');image.src=asset;image.alt='';image.loading='lazy';icon.appendChild(image);label.className='skill-tool-label';label.textContent=name;tag.textContent='';tag.setAttribute('aria-label',name);tag.append(icon,label)})}
 
 // Live GitHub profile statistics with a cached, deployment-safe fallback.
-const GITHUB_STATS_CACHE_KEY='de4_github_stats_v1',GITHUB_STATS_TTL=6*60*60*1000,GITHUB_STATS_FALLBACK={commits:362,repos:22};
+const GITHUB_STATS_CACHE_KEY='de4_github_stats_v1',GITHUB_STATS_TTL=6*60*60*1000,GITHUB_STATS_FALLBACK={commits:366,repos:22};
 const formatGitHubStat=value=>new Intl.NumberFormat('en-US').format(Math.max(0,Math.round(Number(value)||0)));
 function applyGitHubHeroStats({commits,repos}){g('githubCommitCount').textContent=`${formatGitHubStat(commits)}+`;g('githubRepoCount').textContent=formatGitHubStat(repos)}
 function cachedGitHubStats(){try{const value=JSON.parse(localStorage.getItem(GITHUB_STATS_CACHE_KEY)||'null');return value&&Number.isFinite(value.commits)&&Number.isFinite(value.repos)?value:null}catch{return null}}
@@ -1476,7 +1489,7 @@ window.addEventListener('scroll',()=>{pEls.forEach(el=>{const r=el.getBoundingCl
         if(distance>=linkDistance)continue;
         const strength=1-distance/linkDistance;
         context.beginPath();context.moveTo(node.x,node.y);context.lineTo(other.x,other.y);
-        context.strokeStyle=rgba(strength*(dark?.23:.105));context.lineWidth=.55+strength*.5;context.stroke();
+        context.strokeStyle=rgba(strength*(dark?.23:.17));context.lineWidth=.55+strength*.5;context.stroke();
         if((index*7+j*3)%17===0){
           const progress=(now*.00012+(index+j)*.071)%1,x=node.x+dx*progress,y=node.y+dy*progress;
           context.beginPath();context.arc(x,y,1.25+strength,0,Math.PI*2);context.fillStyle=rgba(dark?.82:.62);context.shadowColor=rgba(.85);context.shadowBlur=8;context.fill();context.shadowBlur=0;
@@ -1486,8 +1499,8 @@ window.addEventListener('scroll',()=>{pEls.forEach(el=>{const r=el.getBoundingCl
 
     nodes.forEach(node=>{
       const pulse=.72+Math.sin(now*.0015+node.phase)*.28;
-      context.beginPath();context.arc(node.x,node.y,node.r*pulse,0,Math.PI*2);context.fillStyle=rgba(dark?.66:.38);context.fill();
-      if(node.index%9===0){context.beginPath();context.arc(node.x,node.y,5.5+2*pulse,0,Math.PI*2);context.strokeStyle=rgba(dark?.2:.09);context.lineWidth=.7;context.stroke()}
+      context.beginPath();context.arc(node.x,node.y,node.r*pulse,0,Math.PI*2);context.fillStyle=rgba(dark?.66:.52);context.fill();
+      if(node.index%9===0){context.beginPath();context.arc(node.x,node.y,5.5+2*pulse,0,Math.PI*2);context.strokeStyle=rgba(dark?.2:.15);context.lineWidth=.7;context.stroke()}
     });
     scheduleFrame();
   }
