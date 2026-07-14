@@ -12,6 +12,7 @@ const browser = spawn(edge, [
   '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
   `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, 'about:blank'
 ], { stdio: 'ignore', windowsHide: true });
+let ws;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const assert = (condition, message) => { if (!condition) throw new Error(`ASSERTION: ${message}`); };
@@ -24,7 +25,7 @@ async function main() {
   }
   if (!version) throw new Error('Edge CDP did not start');
   const target = await json(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(pageUrl)}`, { method: 'PUT' });
-  const ws = new WebSocket(target.webSocketDebuggerUrl);
+  ws = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
   let sequence = 0;
   const pending = new Map();
@@ -101,8 +102,8 @@ async function main() {
     const footer = await evaluate(`(()=>{
       const footers=[...document.querySelectorAll('footer')],footer=footers[0],hrefs=[...footer.querySelectorAll('a')].map(link=>link.href),text=footer.innerText;
       const count=prefix=>hrefs.filter(href=>href.startsWith(prefix)).length;
-      const contact=footer.querySelector('#contact');
-      return {count:footers.length,contactInside:!!contact,contactOutsideMain:!document.querySelector('main')?.contains(contact),legacyLinks:footer.querySelectorAll('.ft-links').length,nameCount:(text.match(/Dinusha Ekanayake/g)||[]).length,github:count('https://github.com/Dinusha-Ekanayake'),linkedin:count('https://linkedin.com/in/dinusha-ekanayake-0a0963266'),email:count('mailto:dinushabawantha2003@gmail.com'),phone:count('tel:+94701650424'),theme:document.documentElement.dataset.theme,overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth};
+      const contact=footer.querySelector('#contact'),watermark=footer.querySelector('.ft-big'),watermarkStyle=watermark?getComputedStyle(watermark):null;
+      return {count:footers.length,contactInside:!!contact,contactOutsideMain:!document.querySelector('main')?.contains(contact),legacyLinks:footer.querySelectorAll('.ft-links').length,nameCount:(text.match(/Dinusha Ekanayake/g)||[]).length,github:count('https://github.com/Dinusha-Ekanayake'),linkedin:count('https://linkedin.com/in/dinusha-ekanayake-0a0963266'),email:count('mailto:dinushabawantha2003@gmail.com'),phone:count('tel:+94701650424'),theme:document.documentElement.dataset.theme,watermark:{count:footer.querySelectorAll('.ft-big').length,text:watermark?.textContent.trim()||'',hidden:watermark?.getAttribute('aria-hidden')||'',position:watermarkStyle?.position||'',pointerEvents:watermarkStyle?.pointerEvents||'',opacity:parseFloat(watermarkStyle?.opacity||'0')},overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth};
     })()`);
     const footerShot = await send('Page.captureScreenshot', { format: 'jpeg', quality: 80, captureBeyondViewport: false });
     fs.writeFileSync(path.join(shots, `${label}-footer.jpg`), Buffer.from(footerShot.data, 'base64'));
@@ -110,6 +111,8 @@ async function main() {
     assert(footer.count===1&&footer.contactInside&&footer.contactOutsideMain, `${label}: contact and sign-off are not one site-footer landmark`);
     assert(footer.legacyLinks===0, `${label}: duplicate legacy footer links remain`);
     assert(footer.nameCount===1, `${label}: footer repeats the portfolio owner name`);
+    assert(footer.watermark.count===1&&footer.watermark.text==='DINUSHA'&&footer.watermark.hidden==='true', `${label}: footer DINUSHA watermark is missing or duplicated`);
+    assert(footer.watermark.position==='absolute'&&footer.watermark.pointerEvents==='none'&&footer.watermark.opacity>0&&footer.watermark.opacity<=.06, `${label}: footer DINUSHA watermark is not a subtle background layer`);
     for (const [name,count] of Object.entries({GitHub:footer.github,LinkedIn:footer.linkedin,Email:footer.email,Phone:footer.phone})) assert(count===1, `${label}: ${name} should appear exactly once in the merged footer`);
     assert(footer.theme===theme, `${label}: requested theme was not applied`);
     assert(!footer.overflow, `${label}: merged footer causes horizontal overflow`);
@@ -127,6 +130,7 @@ async function main() {
 }
 
 main().catch(error => { console.error(error.stack || error); process.exitCode = 1; }).finally(async () => {
+  try { ws?.close(); } catch {}
   await wait(150);
   browser.kill();
   await wait(500);
