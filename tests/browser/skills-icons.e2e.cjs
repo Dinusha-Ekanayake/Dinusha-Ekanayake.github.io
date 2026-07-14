@@ -90,11 +90,12 @@ async function main() {
     assert(state.tags.length===62, `${label}: expected 62 skills and tools, received ${state.tags.length}`);
     assert(state.tags.every(tag=>tag.label&&tag.aria===tag.label&&tag.iconCount===1), `${label}: every skill must have one accessible icon and label`);
     assert(state.tags.every(tag=>tag.loaded&&Math.abs(tag.width-18)<=1&&Math.abs(tag.height-18)<=1), `${label}: skill icons are missing, unloaded, or incorrectly sized`);
+    assert(state.tags.every(tag=>tag.kind==='asset'&&tag.src.startsWith('assets/icons/')), `${label}: every skill must use a graphical icon asset instead of a letter mark`);
     for (const [name, asset] of Object.entries(expectedAssets)) {
       const matches=state.tags.filter(tag=>tag.label===name);
       assert(matches.length&&matches.every(tag=>tag.kind==='asset'&&tag.src===asset), `${label}: ${name} should use ${asset}`);
     }
-    assert(state.tags.filter(tag=>tag.kind==='mark').every(tag=>tag.mark.length>=1&&tag.mark.length<=3), `${label}: fallback tool marks are unclear`);
+    assert(!state.tags.some(tag=>tag.kind==='mark'||tag.mark), `${label}: letter-based fallback marks should not remain`);
     const toolsFor=title=>state.cards.find(card=>card.title===title)?.tools||[];
     const models=toolsFor('Machine Learning & Deep Learning'),agents=toolsFor('LLMs & Agentic AI'),product=toolsFor('Full-Stack & APIs'),platform=toolsFor('Data, Cloud & Deployment'),analysis=toolsFor('Analysis & Experimentation');
     for(const tool of ['Fine-Tuning','CatBoost','Kaggle'])assert(models.includes(tool),`${label}: ${tool} is missing from ML & DL`);

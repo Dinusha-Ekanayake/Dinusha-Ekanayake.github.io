@@ -65,6 +65,20 @@ async function main() {
     detail: 'pointer-responsive 3D technology sphere',
     tech: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'GitHub Pages']
   };
+  const expectedDetailedProjects = [
+    {
+      title: 'SmartFlow – Intelligent Human-Tracking Smart Fan',
+      period: 'May 2024 – Aug 2025',
+      detail: 'up to three people',
+      tech: ['ESP32', 'ESPHome', 'HLK-LD2450', 'MG995 Servo', 'DHT22', 'Home Assistant', 'Custom PCB']
+    },
+    {
+      title: 'Research Assistant – Multi-Agent AI System',
+      period: 'Dec 2025 – Present',
+      detail: 'Fact-Checking Agent',
+      tech: ['LangChain', 'Tool Calling', 'OpenAI GPT-4o-mini', 'Claude 3.5 Sonnet', 'Pydantic', 'DuckDuckGo Search', 'Streamlit', 'DOCX']
+    }
+  ];
   const expectedMiniProjects = [
     {
       title: 'CG Algorithm Visualizer',
@@ -87,11 +101,11 @@ async function main() {
   ];
   const expectedBanners = {
     'PredictiX': 'assets/projects/predictix.png',
-    'Multi-Agent Research Assistant': 'assets/projects/research-assistant.png',
+    'Research Assistant – Multi-Agent AI System': 'assets/projects/research-assistant.png',
     'CV Mate': 'assets/projects/cv-mate.png',
     'ReClaim': 'assets/projects/reclaim.png',
     'PageTurn': 'assets/projects/pageturn.png',
-    'SmartFlow': 'assets/projects/smartflow.png',
+    'SmartFlow – Intelligent Human-Tracking Smart Fan': 'assets/projects/smartflow.png',
     'CG Algorithm Visualizer': 'assets/projects/cg-visualizer.png',
     'Algorithm Selection Expert System': 'assets/projects/algorithm-selection-expert-system.png',
     'AI Prompt Quality Analyzer': 'assets/projects/ai-prompt-quality-analyzer.png',
@@ -113,6 +127,7 @@ async function main() {
       const index=projs.findIndex(project=>project.title==='PageTurn');
       const project=index>=0?projs[index]:null;
       const portfolio=projs.find(project=>project.title===${JSON.stringify('AI/ML Engineering Portfolio')})||null;
+      const detailedProjects=projs.filter(project=>project.title.startsWith('SmartFlow')||project.title.startsWith('Research Assistant'));
       const banners=projs.map(item=>{
         const card=[...document.querySelectorAll('#projGrid .proj-card[data-copy="1"]')].find(node=>node.querySelector('.pj-title')?.textContent.trim()===item.title);
         const image=card?.querySelector('.pj-thumb img');
@@ -134,7 +149,7 @@ async function main() {
       if(captureIndex>=0)openProj(captureIndex);
       const heroCount=[...document.querySelectorAll('.hs')].find(item=>item.querySelector('.hs-l')?.textContent.includes('Featured Systems'))?.querySelector('.hs-n')?.textContent.trim()||'';
       return {
-        index,total:projs.length,unique:new Set(projs.map(item=>item.title)).size,project,portfolio,
+        index,total:projs.length,unique:new Set(projs.map(item=>item.title)).size,project,portfolio,detailedProjects,
         filtered:filteredTitles.includes('PageTurn'),heroCount,fullStackReadout,
         allReadout,frontendReadout,frontendTitles,miniReadout,miniTitles,minis,
         banners,
@@ -163,6 +178,12 @@ async function main() {
     assert(state.portfolio.gh===expectedPortfolio.repo&&state.portfolio.demo===expectedPortfolio.demo, `${label}: portfolio repository or live demo destination is incorrect`);
     assert(state.portfolio.fullDesc.includes(expectedPortfolio.detail), `${label}: README-backed portfolio details are incomplete`);
     for (const tech of expectedPortfolio.tech) assert(state.portfolio.tech.includes(tech), `${label}: portfolio is missing ${tech}`);
+    for (const expected of expectedDetailedProjects) {
+      const project=state.detailedProjects.find(item=>item.title===expected.title);
+      assert(project?.period===expected.period, `${label}: ${expected.title} period is missing or incorrect`);
+      assert(project.fullDesc.includes(expected.detail), `${label}: ${expected.title} detailed description is incomplete`);
+      for (const tech of expected.tech) assert(project.tech.includes(tech), `${label}: ${expected.title} is missing ${tech}`);
+    }
     assert(state.frontendFilterExists&&/\/ 01$/.test(state.frontendReadout), `${label}: Frontend filter should contain the portfolio project`);
     assert(state.miniFilterExists&&/\/ 03$/.test(state.miniReadout), `${label}: Mini Projects filter should contain three projects`);
     assert(/\/ 02$/.test(state.fullStackReadout), `${label}: Full Stack filter total should be 02`);
@@ -180,7 +201,8 @@ async function main() {
     assert(!state.overflow, `${label}: page has horizontal overflow`);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     fs.writeFileSync(path.join(shotDir, `${label}.png`), Buffer.from(shot.data, 'base64'));
-    await evaluate("(()=>{closeModal();applyProjectFilter('Frontend');document.querySelectorAll('#projects .rv').forEach(node=>node.classList.add('vis'));document.documentElement.style.scrollBehavior='auto';const section=document.getElementById('projects');window.scrollTo(0,window.scrollY+section.getBoundingClientRect().top);return true})()");
+    const detailFilter=label==='desktop'?'Agentic AI':'Embedded';
+    await evaluate(`(()=>{closeModal();applyProjectFilter(${JSON.stringify(detailFilter)});document.querySelectorAll('#projects .rv').forEach(node=>node.classList.add('vis'));document.documentElement.style.scrollBehavior='auto';const section=document.getElementById('projects');window.scrollTo(0,window.scrollY+section.getBoundingClientRect().top);return true})()`);
     await wait(900);
     const cardShot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     fs.writeFileSync(path.join(shotDir, `${label}-cards.png`), Buffer.from(cardShot.data, 'base64'));

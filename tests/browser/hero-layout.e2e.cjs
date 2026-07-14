@@ -98,9 +98,9 @@ async function main() {
   assert(cachedFallback.commit==='1,234+'&&cachedFallback.repos==='42', 'cached GitHub stats should survive an offline refresh');
 
   const summaries = {};
-  for (const [label, width, height] of [['desktop', 1440, 900], ['tablet', 768, 900], ['mobile', 375, 812]]) {
+  for (const [label, width, height, theme] of [['wide-short', 1644, 758, 'dark'], ['desktop', 1440, 900, 'dark'], ['tablet', 768, 900, 'light'], ['mobile', 375, 812, 'light']]) {
     await send('Emulation.setDeviceMetricsOverride', { width, height, deviceScaleFactor: 1, mobile: width < 600 });
-    await evaluate("window.dispatchEvent(new Event('resize')); true");
+    await evaluate(`document.documentElement.dataset.theme=${JSON.stringify(theme)}; window.dispatchEvent(new Event('resize')); true`);
     await wait(400);
     const state = await evaluate(`(()=>{
       const rect=element=>{const r=element.getBoundingClientRect();return {left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height,cx:r.left+r.width/2,cy:r.top+r.height/2}};
