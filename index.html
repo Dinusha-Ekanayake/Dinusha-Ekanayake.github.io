@@ -678,7 +678,7 @@ nav{position:fixed;top:0;inset-inline:0;height:var(--navH);display:flex;align-it
   </div>
   <div class="hero-stats" aria-label="Portfolio statistics"><div class="hero-stats-inner">
     <div class="hs"><span class="hs-n">2024</span><span class="hs-l">AI Journey Began</span></div>
-    <div class="hs"><span class="hs-n" id="githubCommitCount" aria-live="polite">2,269+</span><span class="hs-l">GitHub Commits</span></div>
+    <div class="hs"><span class="hs-n" id="githubCommitCount" aria-live="polite">1,825+</span><span class="hs-l">GitHub Commits</span></div>
     <div class="hs"><span class="hs-n" id="featuredSystemCount">10</span><span class="hs-l">Featured Systems</span></div>
     <div class="hs"><span class="hs-n" id="githubRepoCount" aria-live="polite">30</span><span class="hs-l">Repositories</span></div>
   </div></div>
@@ -1251,7 +1251,7 @@ const SKILL_ICON_ASSETS=Object.freeze({
 function enhanceSkillTags(){document.querySelectorAll('#skills .skill-tag').forEach(tag=>{if(tag.querySelector('.skill-tool-icon'))return;const name=tag.textContent.trim(),asset=SKILL_ICON_ASSETS[name]||'assets/icons/problem-solving.svg',icon=document.createElement('span'),image=document.createElement('img'),label=document.createElement('span');icon.className='skill-tool-icon';icon.dataset.kind='asset';icon.setAttribute('aria-hidden','true');image.src=asset;image.alt='';image.loading='lazy';icon.appendChild(image);label.className='skill-tool-label';label.textContent=name;tag.textContent='';tag.setAttribute('aria-label',name);tag.append(icon,label)})}
 
 // Live GitHub profile statistics with a cached, deployment-safe fallback.
-const GITHUB_STATS_CACHE_KEY='de4_github_stats_v1',GITHUB_STATS_TTL=10*60*1000,GITHUB_STATS_FALLBACK={commits:2269,repos:30};
+const GITHUB_STATS_CACHE_KEY='de4_github_stats_v1',GITHUB_STATS_TTL=10*60*1000,GITHUB_STATS_FALLBACK={commits:1825,repos:30};
 const formatGitHubStat=value=>new Intl.NumberFormat('en-US').format(Math.max(0,Math.round(Number(value)||0)));
 function applyGitHubHeroStats({commits,repos}){g('githubCommitCount').textContent=`${formatGitHubStat(commits)}+`;g('githubRepoCount').textContent=formatGitHubStat(repos)}
 function cachedGitHubStats(){try{const value=JSON.parse(localStorage.getItem(GITHUB_STATS_CACHE_KEY)||'null');return value&&Number.isFinite(value.commits)&&Number.isFinite(value.repos)?value:null}catch{return null}}
