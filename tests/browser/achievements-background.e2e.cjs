@@ -92,7 +92,7 @@ async function main() {
         titleColor:titleStyle?.color||'',academicTitleColor:academicTitleStyle?.color||'',overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth
       };
     })()`);
-    assert(state.cardCount===2&&state.photoClass, `${label}: DataXplore card is not configured as the photo achievement`);
+    assert(state.cardCount===3&&state.photoClass, `${label}: DataXplore card is not configured as the photo achievement`);
     assert(state.image.count===1&&state.image.src==='assets/achievements/dataxplore-finalist.jpg'&&state.image.alt===''&&state.image.hidden==='true'&&state.image.loaded&&state.image.fit==='cover', `${label}: DataXplore background image is missing, inaccessible, or incorrectly fitted`);
     assert(state.academicPhotoClass, `${label}: G.C.E. A/L card is not configured as a photo achievement`);
     assert(state.academicImage.count===1&&state.academicImage.src==='assets/achievements/best-al-results.jpg'&&state.academicImage.alt===''&&state.academicImage.hidden==='true'&&state.academicImage.loaded&&state.academicImage.fit==='cover', `${label}: G.C.E. A/L background image is missing, inaccessible, or incorrectly fitted`);

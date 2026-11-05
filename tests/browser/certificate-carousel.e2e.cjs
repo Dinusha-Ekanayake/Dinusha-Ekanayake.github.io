@@ -92,7 +92,7 @@ async function main() {
       };
     })()`);
     assert(initial.hasViewport && initial.hasPrev && initial.hasNext && initial.hasAutoplay, `${label}: carousel or autoplay controls are missing`);
-    assert(initial.total === 16, `${label}: expected all 16 certificate cards in the horizontal track`);
+    assert(initial.total === 26, `${label}: expected all 26 certificate cards in the horizontal track`);
     assert(initial.horizontal && initial.oneRow, `${label}: certificates are not a one-row horizontal track`);
     assert(initial.visible === expectedVisible, `${label}: expected ${expectedVisible} visible card(s), got ${initial.visible}`);
     assert(!initial.overflow, `${label}: page has horizontal overflow`);

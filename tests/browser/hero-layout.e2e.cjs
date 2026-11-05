@@ -111,7 +111,7 @@ async function main() {
       return {hero:rect(hero),inner:rect(inner),left:rect(left),right:rect(right),stats:rect(stats),statInner:rect(statInner),controls,statItems,overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth};
     })()`);
     assert(state.statItems.map(item=>item.label).join('|')==='AI Journey Began|GitHub Commits|Featured Systems|Repositories', `${label}: hero stat order is incorrect`);
-    assert(state.statItems[0].value==='2024'&&state.statItems[1].value==='1,234+'&&state.statItems[2].value==='10'&&state.statItems[3].value==='42', `${label}: hero stat values are incorrect (${state.statItems.map(item=>item.value).join(' / ')})`);
+    assert(state.statItems[0].value==='2024'&&state.statItems[1].value==='1,234+'&&state.statItems[2].value==='11'&&state.statItems[3].value==='42', `${label}: hero stat values are incorrect (${state.statItems.map(item=>item.value).join(' / ')})`);
     assert(state.controls.length===4, `${label}: expected four hero controls`);
     const heights=state.controls.map(item=>item.height);
     assert(Math.max(...heights)-Math.min(...heights)<=1.5, `${label}: hero control heights are inconsistent`);
@@ -133,21 +133,20 @@ async function main() {
   }
 
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
-  const snapContract=await evaluate(`(()=>{
+  const freeScroll=await evaluate(`(()=>{
     const targets=[document.getElementById('hero'),...document.querySelectorAll('.post-hero-shell>.sw'),document.querySelector('.site-footer')].filter(Boolean);
     const root=getComputedStyle(document.documentElement);
-    return {type:root.scrollSnapType,padding:root.scrollPaddingTop,count:targets.length,targets:targets.map(target=>({align:getComputedStyle(target).scrollSnapAlign,stop:getComputedStyle(target).scrollSnapStop}))};
+    return {type:root.scrollSnapType,padding:root.scrollPaddingTop,snapTargets:targets.filter(target=>getComputedStyle(target).scrollSnapAlign!=='none').length};
   })()`);
-  assert(snapContract.type==='y mandatory', `section snap type should be y mandatory, received ${snapContract.type}`);
-  assert(parseFloat(snapContract.padding)>=56, `section snap padding should clear the fixed navigation, received ${snapContract.padding}`);
-  assert(snapContract.count===10&&snapContract.targets.every(target=>target.align==='start'&&target.stop==='always'), 'hero, section wrappers, and footer must all be mandatory snap targets');
+  assert(freeScroll.type==='none', `section snapping should be disabled for free scrolling, received ${freeScroll.type}`);
+  assert(freeScroll.snapTargets===0, 'sections and footer must not be scroll-snap targets');
+  assert(parseFloat(freeScroll.padding)>=56, `scroll padding should still clear the fixed navigation for anchor links, received ${freeScroll.padding}`);
 
-  await evaluate(`(()=>{document.documentElement.dataset.theme='dark';document.documentElement.style.scrollBehavior='auto';const target=document.querySelector('.post-hero-shell>.sw');const top=target.getBoundingClientRect().top+scrollY;scrollTo(0,top-innerHeight*.42);return true})()`);
+  const requested=await evaluate(`(()=>{document.documentElement.dataset.theme='dark';document.documentElement.style.scrollBehavior='auto';const target=document.querySelector('.post-hero-shell>.sw');const top=target.getBoundingClientRect().top+scrollY-innerHeight*.42;scrollTo(0,top);return top})()`);
   await wait(900);
-  const snapped=await evaluate(`(()=>{const target=document.querySelector('.post-hero-shell>.sw'),nav=document.querySelector('nav');return {targetTop:target.getBoundingClientRect().top,navBottom:nav.getBoundingClientRect().bottom,snapPadding:parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop),overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth}})()`);
-  assert(snapped.targetTop>=snapped.navBottom-2, `snapped section is obscured by the fixed navigation (${snapped.targetTop}px vs ${snapped.navBottom}px)`);
-  assert(Math.abs(snapped.targetTop-snapped.snapPadding)<=4, `scrolling stopped between sections instead of at the configured snap point (${snapped.targetTop}px vs ${snapped.snapPadding}px)`);
-  assert(!snapped.overflow, 'section snapping introduces horizontal overflow');
+  const rested=await evaluate(`(()=>({y:scrollY,overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth}))()`);
+  assert(Math.abs(rested.y-requested)<=2, `scrolling between sections should stay where it stops (${rested.y}px vs ${requested}px)`);
+  assert(!rested.overflow, 'free scrolling introduces horizontal overflow');
 
   const tallProbe=await evaluate(`(()=>{
     const target=[...document.querySelectorAll('.post-hero-shell>.sw')].find(section=>section.getBoundingClientRect().height>innerHeight+240);

@@ -164,7 +164,7 @@ async function main() {
       };
     })()`);
     assert(state.index>=0, `${label}: PageTurn is missing from the project catalog`);
-    assert(state.total===10&&state.unique===10, `${label}: expected ten unique projects, received ${state.total} total / ${state.unique} unique`);
+    assert(state.total===11&&state.unique===11, `${label}: expected eleven unique projects, received ${state.total} total / ${state.unique} unique`);
     for (const [title, asset] of Object.entries(expectedBanners)) {
       const banner=state.banners.find(item=>item.title===title);
       assert(banner?.path===asset&&banner.src===asset, `${label}: ${title} does not use its local GitHub banner`);
@@ -197,7 +197,7 @@ async function main() {
     const captured=expectedMiniProjects.find(item=>item.title===state.modalTitle);
     assert(captured&&state.repoHref===captured.repo, `${label}: mini-project modal or GitHub destination is incorrect`);
     assert(state.modalImage.exists&&state.modalImage.loaded&&state.modalImage.alt===state.modalTitle, `${label}: project modal banner is missing or inaccessible`);
-    assert(state.heroCount==='10'&&/\/ 10$/.test(state.allReadout), `${label}: overall project totals were not updated to 10`);
+    assert(state.heroCount==='11'&&/\/ 11$/.test(state.allReadout), `${label}: overall project totals were not updated to 11`);
     assert(!state.overflow, `${label}: page has horizontal overflow`);
     const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
     fs.writeFileSync(path.join(shotDir, `${label}.png`), Buffer.from(shot.data, 'base64'));
@@ -246,7 +246,7 @@ async function main() {
     unique:new Set(projs.map(project=>project.title)).size,
     total:projs.length
   })`);
-  assert(migration.pageTurn===1&&migration.cg===1&&migration.algorithm===1&&migration.prompt===1&&migration.portfolio===1&&migration.custom===1&&migration.banners&&migration.unique===11&&migration.total===11, 'project migration did not add required projects, refresh canonical banners, and preserve custom projects');
+  assert(migration.pageTurn===1&&migration.cg===1&&migration.algorithm===1&&migration.prompt===1&&migration.portfolio===1&&migration.custom===1&&migration.banners&&migration.unique===12&&migration.total===12, 'project migration did not add required projects, refresh canonical banners, and preserve custom projects');
 
   assert(runtimeErrors.length===0, `runtime errors: ${runtimeErrors.join('; ')}`);
   console.log(JSON.stringify({ pass: true, results, migration, runtimeErrors, screenshots: shotDir }, null, 2));
