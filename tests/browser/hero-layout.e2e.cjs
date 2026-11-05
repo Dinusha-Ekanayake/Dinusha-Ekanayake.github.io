@@ -64,6 +64,7 @@ async function main() {
     const originalFetch=window.fetch;
     window.fetch=async url=>{
       calls.push(String(url));
+      if(String(url).includes('stats.json'))return {ok:false,json:async()=>({})};
       if(String(url).includes('/users/'))return {ok:true,json:async()=>({public_repos:42})};
       if(String(url).includes('/search/commits'))return {ok:true,json:async()=>({total_count:1234})};
       throw new Error('Unexpected URL '+url);
@@ -80,11 +81,19 @@ async function main() {
     }finally{window.fetch=originalFetch}
   })()`);
   assert(liveUpdate.available, 'live GitHub hero-stat functions are missing');
-  assert(liveUpdate.calls.length===2, 'live GitHub stats should use exactly two requests');
+  assert(liveUpdate.calls.filter(url=>!url.includes('stats.json')).length===2, 'public GitHub fallback should use exactly two API requests');
   assert(liveUpdate.calls.some(url=>url.includes('/users/Dinusha-Ekanayake')), 'GitHub user endpoint was not requested');
   assert(liveUpdate.calls.some(url=>url.includes('/search/commits')), 'GitHub commit search endpoint was not requested');
   assert(liveUpdate.commit==='1,234+'&&liveUpdate.repos==='42', 'live GitHub response was not rendered correctly');
 
+  const published = await evaluate(`(async()=>{
+    const calls=[];const originalFetch=window.fetch;
+    window.fetch=async url=>{calls.push(String(url));if(String(url).includes('stats.json'))return {ok:true,json:async()=>({commits:2282,repos:41,publicRepos:30,privateRepos:11,updatedAt:Date.now()})};throw new Error('Unexpected URL '+url)};
+    try{localStorage.removeItem('de4_github_stats_v1');await refreshGitHubHeroStats(true);return {calls,commit:document.getElementById('githubCommitCount')?.textContent.trim()||'',repos:document.getElementById('githubRepoCount')?.textContent.trim()||''}}finally{window.fetch=originalFetch}
+  })()`);
+  assert(published.calls.length===1&&published.commit==='2,282+'&&published.repos==='41', 'published stats.json (public + private totals) should be preferred without calling the GitHub API');
+
+  await evaluate(`(async()=>{const originalFetch=window.fetch;window.fetch=async url=>{if(String(url).includes('stats.json'))return {ok:false,json:async()=>({})};if(String(url).includes('/users/'))return {ok:true,json:async()=>({public_repos:42})};return {ok:true,json:async()=>({total_count:1234})}};try{localStorage.removeItem('de4_github_stats_v1');await refreshGitHubHeroStats(true)}finally{window.fetch=originalFetch}})()`);
   const cachedFallback = await evaluate(`(async()=>{
     const originalFetch=window.fetch;
     window.fetch=async()=>{throw new Error('Simulated offline state')};
